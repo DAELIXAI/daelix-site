@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Governance and Limitations · DAELIX AI</title>
+<meta name="description" content="The standard DAELIX AI installs against. What the system is permitted to do, where it stops, how it is corrected, and what it is not for. Published before purchase.">
+<link rel="canonical" href="https://daelixai.com/governance.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DAELIX AI">
+<meta property="og:url" content="https://daelixai.com/governance.html">
+<meta property="og:title" content="Governance and Limitations · DAELIX AI">
+<meta property="og:description" content="The standard we install against. Published before purchase, not after.">
+<meta property="og:image" content="https://daelixai.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicon.png" sizes="512x512">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&amp;family=IBM+Plex+Mono:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#fff;color:#0a0a0a;font-family:'Archivo',sans-serif;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.hov0:hover{color:#000}
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px 34px;background:linear-gradient(#fff 55%,transparent)}
+.wrap{max-width:820px;margin:0 auto;padding:0 34px}
+.hero{padding:190px 0 90px;border-bottom:1px solid #e6e6e6;margin-bottom:80px}
+h1{font-weight:450;font-stretch:122%;font-size:clamp(38px,6vw,72px);line-height:1.05;letter-spacing:-.01em}
+.kicker{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.34em;color:#9a9a9a;margin-bottom:38px}
+.standfirst{margin-top:34px;font-size:18px;line-height:1.75;color:#1a1a1a;font-weight:330;max-width:640px}
+.secnum{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.3em;color:#9a9a9a;margin-bottom:22px;display:flex;align-items:center;gap:16px}
+.secnum::after{content:"";height:1px;flex:1;background:#eee}
+h2{font-weight:450;font-stretch:118%;font-size:clamp(23px,3vw,32px);line-height:1.2;max-width:640px}
+.prose{margin-top:26px}
+.prose p{font-size:16.5px;line-height:1.85;color:#242424;font-weight:330;margin-bottom:20px;max-width:640px}
+.prose b{font-weight:600;color:#000}
+.platewrap{overflow-x:auto;margin:10px 0 70px;padding-bottom:6px}
+svg.plate{min-width:900px;width:100%;display:block}
+.plate text{font-family:'IBM Plex Mono',monospace;fill:#1c1c1c}
+.plate .box{fill:#fff;stroke:#7a7a7a;stroke-width:1}
+.plate .boxmajor{fill:#fff;stroke:#1a1a1a;stroke-width:1.2}
+.plate .wire{stroke:#8f8f8f;stroke-width:1;fill:none}
+.plate .jroute{stroke:#111;stroke-width:1;fill:none;stroke-dasharray:5 4}
+.plate .frame{fill:none;stroke:#d5d5d5;stroke-width:1}
+.plate .lbl{font-size:11.5px;letter-spacing:.18em}
+.plate .lbl2{font-size:10px;letter-spacing:.16em}
+.plate .tag{fill:#8d8d8d;font-size:8.5px;letter-spacing:.14em}
+.plate .anno{fill:#a0a0a0;font-size:8.5px;letter-spacing:.2em}
+.laws{border-top:1px solid #e6e6e6;margin-top:10px}
+.lawrow{display:grid;grid-template-columns:110px 1fr;gap:30px;padding:28px 0;border-bottom:1px solid #e6e6e6;align-items:baseline}
+.lawcode{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.3em;color:#9a9a9a}
+.lawrow p{font-size:16.5px;line-height:1.7;color:#242424;font-weight:330}
+.lawrow b{font-weight:700;color:#000}
+.ver{margin-top:70px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.3em;color:#606060;line-height:2.2}
+footer{border-top:1px solid #e6e6e6;margin-top:110px;padding:80px 34px 60px}
+.fin{max-width:820px;margin:0 auto;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.26em;color:#9a9a9a;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+[data-rv]{opacity:0;transform:translateY(14px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+[data-rv].in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){[data-rv]{opacity:1;transform:none;transition:none}}
+@media (max-width:760px){
+  nav{padding:14px 20px}
+  .wrap{padding:0 20px}
+  .hero{padding:150px 0 60px;margin-bottom:56px}
+  .lawrow{grid-template-columns:1fr;gap:10px}
+  .fin{justify-content:flex-start;gap:10px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" aria-label="DAELIX AI" style="display:flex;align-items:baseline;gap:2px">
+    <svg viewBox="14 14 68 68" xmlns="http://www.w3.org/2000/svg" style="height:26px;width:auto;display:block;align-self:center">
+      <defs><clipPath id="dclip-n"><polygon points="20,78 27,18 37,18 30,78"></polygon><polygon points="41,18 59,18 76,35 76,61 59,78 41,78 41,66 54,66 65,55 65,41 54,29 41,29"></polygon></clipPath></defs>
+      <g fill="#0d0d0d"><polygon points="20,78 27,18 37,18 30,78"></polygon><polygon points="41,18 59,18 76,35 76,61 59,78 41,78 41,66 54,66 65,55 65,41 54,29 41,29"></polygon></g>
+      <g clip-path="url(#dclip-n)"><rect x="-20" y="10" width="7" height="76" fill="#ffffff"><animate attributeName="x" values="-20;100" dur="3.4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1"></animate></rect></g>
+    </svg>
+    <span style="font-weight:700;font-size:19px;letter-spacing:.14em">AELIX</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#606060;letter-spacing:.3em;margin-left:6px">AI</span>
+  </a>
+  <a href="/" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.28em;color:#606060" class="hov0">BACK</a>
+</nav>
+
+<div class="wrap">
+  <div class="hero" data-rv>
+    <div class="kicker">DAELIX AI · GOVERNANCE AND LIMITATIONS</div>
+    <h1>The standard we install against.</h1>
+    <p class="standfirst">Automation is bought on trust and almost never sold with anything to inspect. This page is the inspection. It states what the system is permitted to do, where it stops, how it is corrected, and what it is not for. It is published before purchase, because a machine that cannot be examined before it is installed has no business being installed.</p>
+  </div>
+
+<section data-rv style="padding:0 0 70px">
+  <div class="secnum">§ 01 · THE UNIT</div>
+  <h2>Nothing is delivered as a general assistant.</h2>
+  <div class="prose"><p>The unit is a cell: one workflow, one job, briefed against a written standard agreed before any work begins.</p>
+<p>Every cell has the same anatomy. A brief that states the job, the boundaries, the register and the exceptions. An orchestrator that assigns. Workers that each hold one task. A schema check on every output. A verifier that did not produce the work it is judging. A record of every action taken. A defined point at which the work leaves the machine.</p>
+<p><b>The brief is written first.</b> Where the brief is silent, the cell does not improvise. It halts and escalates. Silence is treated as an exception, never as permission.</p></div>
+</section>
+<section data-rv style="padding:0 0 70px">
+  <div class="secnum">§ 02 · THE GATES</div>
+  <h2>Some decisions never leave a person.</h2>
+  <div class="prose"><p>Held by a named person by default, in every installation: pricing and discounts, refunds and credits, any commitment not already written in the brief, and anything the brief did not foresee.</p>
+<p>These are gates, not preferences. Each holds one class of decision and each is named to a role in the installation agreement, so that responsibility has an address rather than a policy.</p></div>
+</section>
+<section data-rv style="padding:0 0 70px">
+  <div class="secnum">§ 03 · VERIFICATION</div>
+  <h2>Nothing verifies its own work.</h2>
+  <div class="prose"><p>Every output is examined by a separate process with no part in producing it, against the standard the brief sets.</p>
+<p>This is the load-bearing rule of the whole architecture. <b>A system that checks itself is a system that agrees with itself.</b></p></div>
+</section>
+<section data-rv style="padding:0 0 70px">
+  <div class="secnum">§ 04 · THE RECORD</div>
+  <h2>Every action is written down.</h2>
+  <div class="prose"><p>What was done, when, on what input, with what result, and where it stopped. The record is readable by the client without us, and it is handed over intact at the end of an installation.</p>
+<p>Trust here does not rest on our word. It rests on a document you can read on a Sunday without ringing anyone.</p></div>
+</section>
+<section data-rv style="padding:0 0 70px">
+  <div class="secnum">§ 05 · WHAT WE BUILD WITH</div>
+  <h2>The fault decides the instrument.</h2>
+  <div class="prose"><p>An audit does not produce a technology recommendation. It produces a description of where a business loses time, money and work, and each of those losses has a shape. Some are answered by a system that behaves identically on the thousandth run as the first. Some require judgement about language. Most require both, arranged in a particular order. We build to the shape of the fault. We do not arrive with a preferred tool and look for somewhere to use it.</p>
+<p>This company is not built on any single technology and does not depend on one. We build workflows that use language models where language is the problem, and workflows that use none at all where it is not. Both are delivered to the same standard. The client is not asked to care which, only that the fault closes and stays closed.</p>
+<p>The test is not whether a task looks technical. It is whether it repeats. <b>If it repeats, it can be installed.</b></p>
+<p>Where a model is used in a workflow, the provider and the jurisdiction of its processing are named to the client in advance, and identifying data is withheld from it wherever the work permits.</p>
+<p><b>We do not publish our construction methods. We publish the anatomy that every construction must satisfy, and that is what this page is.</b></p></div>
+</section>
+<section data-rv style="padding:0 0 70px">
+  <div class="secnum">§ 06 · DATA</div>
+  <h2>The narrowest access that allows the work.</h2>
+  <div class="prose"><p>We take access only to the systems named in the agreement, at the lowest permission that lets the work happen, revocable by the client at any moment and without notice to us.</p>
+<p>Retention is set per installation and stated in writing. Client data is never used to build anything for another client, and it is never sold or shared.</p></div>
+</section>
+<section data-rv style="padding:0 0 70px">
+  <div class="secnum">§ 07 · FAULT AND REPAIR</div>
+  <h2>Systems fail. What separates a serious installation from an unserious one is the minutes afterwards.</h2>
+  <div class="prose"><p>Faults are detected by the system, not reported by the client. On detection the cell contains itself: the action halts or reverses, and the workflow stops rather than continuing in an unknown state. The incident is written to a register with what happened, what it touched, and what was changed.</p>
+<p>Then the part that matters. Every fix is examined for whether it is local or general. A local fault is repaired in that cell. A general fault is written into the brief and corrected in every cell of that class, everywhere, at once.</p>
+<p>This is the structural advantage over a human process and it is worth stating plainly. A person who makes an error on a Tuesday may make it again in March. <b>A corrected cell does not repeat the error, and neither does any other cell built to the same standard.</b> The system does not merely recover. It improves, permanently, from every fault it meets.</p>
+<p>Any installation can be stopped completely, by the client, in one action.</p></div>
+</section>
+<div class="platewrap" data-rv><svg class="plate" viewBox="0 0 1360 470" xmlns="http://www.w3.org/2000/svg"><rect class="frame" x="10" y="10" width="1340" height="450"/><g stroke="#999" stroke-width="1"><line x1="10" y1="30" x2="24" y2="30"/><line x1="30" y1="10" x2="30" y2="24"/><line x1="1350" y1="30" x2="1336" y2="30"/><line x1="1330" y1="10" x2="1330" y2="24"/></g><rect class="boxmajor" x="70" y="110" width="240" height="84"/><text class="lbl" x="190" y="150" text-anchor="middle">DETECT</text><text class="tag" x="190" y="172" text-anchor="middle">THE SYSTEM, NOT THE CLIENT</text><rect class="boxmajor" x="370" y="110" width="240" height="84"/><text class="lbl" x="490" y="150" text-anchor="middle">CONTAIN</text><text class="tag" x="490" y="172" text-anchor="middle">HALT OR REVERSE</text><path class="wire" d="M310,152 L370,152"/><rect class="boxmajor" x="670" y="110" width="240" height="84"/><text class="lbl" x="790" y="150" text-anchor="middle">REGISTER</text><text class="tag" x="790" y="172" text-anchor="middle">WHAT, WHEN, WHAT IT TOUCHED</text><path class="wire" d="M610,152 L670,152"/><path class="box" d="M1000,110 L1120,152 L1000,194 L880,152 Z" fill="#fff" stroke="#1a1a1a" stroke-width="1.2"/><text class="lbl" x="1000" y="148" text-anchor="middle">LOCAL OR</text><text class="lbl" x="1000" y="166" text-anchor="middle">GENERAL?</text><path class="wire" d="M910,152 L880,152"/><rect class="box" x="1150" y="60" width="150" height="74"/><text class="lbl2" x="1225" y="92" text-anchor="middle">THIS CELL</text><text class="tag" x="1225" y="112" text-anchor="middle">REPAIRED</text><rect class="boxmajor" x="1150" y="180" width="150" height="74"/><text class="lbl2" x="1225" y="206" text-anchor="middle">EVERY CELL</text><text class="tag" x="1225" y="226" text-anchor="middle">BRIEF AMENDED</text><text class="tag" x="1225" y="242" text-anchor="middle">OF THAT CLASS</text><path class="wire" d="M1120,140 C1140,120 1140,100 1150,97"/><path class="jroute" d="M1120,164 C1140,190 1140,210 1150,217"/><path class="jroute" d="M1225,254 C1225,330 700,340 190,340 L190,194"/><text class="anno" x="700" y="366" text-anchor="middle">A CORRECTED CELL DOES NOT REPEAT THE FAULT, AND NEITHER DOES ANY OTHER BUILT TO THE SAME STANDARD</text><rect class="box" x="70" y="392" width="240" height="54"/><text class="lbl2" x="190" y="424" text-anchor="middle">STOP EVERYTHING</text><text class="anno" x="330" y="424" text-anchor="start">ONE ACTION, HELD BY THE CLIENT, AT ANY TIME</text></svg></div>
+<section data-rv style="padding:0 0 70px">
+  <div class="secnum">§ 08 · EVERY INSTALLATION IS BUILT FOR THE BUSINESS IT IS INSTALLED IN</div>
+  <h2>What is standardised here is not the workflow. It is the method.</h2>
+  <div class="prose"><p>Some patterns already run inside this company and arrive shaped. Others are built specifically to a client's seams, because a business has systems and handovers that ours does not and a workflow that ignores them is decoration. Both are built to the same anatomy, briefed to the same standard, verified by the same separate process and recorded in the same way.</p>
+<p>Reliability does not come from having built the identical thing before. It comes from the architecture, and the architecture is the same on the first build as on the hundredth: one job per agent, a written standard, an independent check, a full record, and a defined point where the work leaves the machine.</p>
+<p><b>Nothing goes live on a guess.</b> Every cell runs against real data with sending disabled until it holds the standard, and it is released by a person who has seen it hold. A client's customers are never the test.</p>
+<p>We state which parts of an installation are patterns already running and which are built to your operation, because it determines scope, timeline and price. It does not determine whether they work. That is settled before anything is switched on.</p></div>
+</section>
+<section data-rv style="padding:0 0 70px">
+  <div class="secnum">§ 09 · LIMITATIONS</div>
+  <h2>Three, stated because knowing them is what makes the rest reliable.</h2>
+  <div class="prose"><p><b>A cell does one job.</b> It is not a mind for hire. It does not decide what the business should be, and it will not answer a question the brief did not anticipate. Its narrowness is the source of its reliability.</p>
+<p><b>Nothing here holds a relationship.</b> Trust between people, a difficult conversation, a judgement with someone's livelihood in it. These are not automation problems and we do not treat them as such.</p>
+<p><b>Automation of a broken process yields a faster broken process.</b> Where the audit finds the fault is in the process rather than the execution, we say so, and we fix the process or we do not install.</p></div>
+</section>
+<section data-rv style="padding:0 0 70px">
+  <div class="secnum">§ 10 · CHANGE CONTROL</div>
+  <h2>Versioned and dated.</h2>
+  <div class="prose"><p>Material changes to this page are recorded, not silently edited. Questions, concerns and complaints go to <a href="mailto:bailey@daelixai.com" style="color:#000;border-bottom:1px solid #c9c9c9">bailey@daelixai.com</a> and are answered by a person.</p></div>
+</section>
+
+  <section data-rv style="padding:0 0 40px">
+    <div class="secnum">§ 11 · THE LAW</div>
+    <h2>What cannot be overruled by convenience.</h2>
+    <div class="laws">
+<div class="lawrow"><div class="lawcode">LAW 01</div><p><b>No borrowed numbers.</b> Every figure we state about your business was measured inside it. Published work may be cited, with its source named. Nothing else counts as evidence.</p></div>
+<div class="lawrow"><div class="lawcode">LAW 02</div><p><b>Nothing verifies its own work.</b> Every output is judged by something that did not produce it. This is not a feature. It is the architecture.</p></div>
+<div class="lawrow"><div class="lawcode">LAW 03</div><p><b>The work holds the client, not the paperwork.</b> The running arrangement ends on thirty days' notice, no penalty. Completed installation work is paid on acceptance. Nothing else binds anyone.</p></div>
+<div class="lawrow"><div class="lawcode">LAW 04</div><p><b>No price is invented in the room.</b> A range in conversation. A binding quotation in writing within twenty-four hours. Nobody in this company prices on instinct.</p></div>
+<div class="lawrow"><div class="lawcode">LAW 05</div><p><b>If it is not true, it is not said.</b> Misrepresentation ends the engagement and the employment. First offence.</p></div>
+<div class="lawrow"><div class="lawcode">LAW 06</div><p><b>Execution is delegated. Accountability is not.</b> Autonomy is granted per workflow, earned on recorded evidence, and revocable in one action. A machine can be trusted with the doing. A person answers for it.</p></div>
+    </div>
+    <div class="ver">VERSION 1.0 · MMXXVI<br>DAELIX AI · UNITED KINGDOM</div>
+  </section>
+</div>
+
+<footer>
+  <div class="fin">
+    <div>DAELIX AI · UNITED KINGDOM</div>
+    <div><a href="/" class="hov0">HOME</a> · <a href="mailto:bailey@daelixai.com" class="hov0">CONTACT</a></div>
+    <div>DAELIXAI.COM · MMXXVI</div>
+  </div>
+</footer>
+
+<script>
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.08});
+document.querySelectorAll('[data-rv]').forEach(function(el){io.observe(el)});
+</script>
+</body>
+</html>
