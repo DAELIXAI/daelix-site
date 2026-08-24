@@ -779,7 +779,7 @@ function daelixAudit(e, f) {
   btn.disabled = true; btn.textContent = 'SENDING';
   var data = {};
   new FormData(f).forEach(function (v, k) { data[k] = v; });
-  fetch('https://theliftedveil.app.n8n.cloud/webhook/daelix-audit-request', {
+  fetch('https://daelix-hooks.baileyfounder.workers.dev/', {
     method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data)
   }).then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function (j) {
