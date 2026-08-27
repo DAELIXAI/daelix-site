@@ -851,81 +851,45 @@ class Component extends DCLogic {
     const cv = document.getElementById('cortex');
     if (cv) {
       const ctx = cv.getContext('2d');
-      let W = 0, H = 0, cx = 0, cy = 0, nodes = [], edges = [];
-      let mx = -1e5, my = -1e5;
-
-      const build = () => {
-        nodes = []; edges = [];
-        const HUBS = 12, N = Math.min(Math.floor(1900 * dens), Math.floor(W * H / 620 * dens));
-        for (let i = 0; i < HUBS; i++)
-          nodes.push({ d: rand(92, 140), a: i / HUBS * TAU + rand(-0.2, 0.2), r: rand(2.2, 3.2), t: 0, ph: rand(0, TAU), sp: rand(0.3, 0.8), am: rand(1, 2.6) });
-        let frontier = [...nodes.keys()];
-        while (nodes.length < N && frontier.length) {
-          const fi = Math.floor(Math.random() * frontier.length), pi = frontier[fi], p = nodes[pi];
-          const st = [70, 52, 40, 30, 24, 20][Math.min(p.t, 5)] * rand(0.6, 1.25);
-          nodes.push({ d: p.d + st, a: p.a + rand(-0.5, 0.5) / (p.t * 0.6 + 1), r: Math.max(0.7, p.r * 0.68), t: p.t + 1, ph: rand(0, TAU), sp: rand(0.3, 0.8), am: rand(1, 2.6), k: 0 });
-          edges.push([pi, nodes.length - 1]);
-          p.k = (p.k || 0) + 1;
-          if (p.t < 6) frontier.push(nodes.length - 1);
-          if (p.k >= [7, 5, 4, 3, 3, 2][Math.min(p.t, 5)]) frontier.splice(fi, 1);
+      let W = 0, H = 0, ents = [], t0 = performance.now();
+      const EN = Math.min(170, Math.floor(150 * dens + 20));
+      const buildE = () => {
+        ents = [];
+        const cols = 16, rows = 9;
+        for (let i = 0; i < EN; i++) {
+          const c = i % cols, r = Math.floor(i / cols) % rows;
+          ents.push({ x: rand(0, W), y: rand(0, H), vx: rand(-0.4, 0.4), vy: rand(-0.4, 0.4), hx: W * (0.05 + 0.9 * c / (cols - 1)), hy: H * (0.08 + 0.84 * r / (rows - 1)) });
         }
       };
-
-      const size = () => {
-        W = cv.clientWidth; H = cv.clientHeight;
-        cv.width = W; cv.height = H;
-        const narrow = W < 820;
-        cx = W * (narrow ? o.cxNarrow : o.cx);
-        cy = H * (narrow ? o.cyNarrow : o.cy);
-        build();
-      };
-      size(); on(window, 'resize', size);
-
-      on(window, 'mousemove', e => { const r = cv.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; });
-      on(window, 'mouseout', () => { mx = -1e5; my = -1e5; });
-
-      const PUMP = 2.7, SIG = 58, R0 = 130, R02 = R0 * R0;
-      const frame = ts => {
-        if (dead.v) return;
-        const t = ts / 1000;
+      const sizeE = () => { W = cv.clientWidth; H = cv.clientHeight; cv.width = W; cv.height = H; buildE(); t0 = performance.now(); };
+      sizeE(); on(window, 'resize', sizeE);
+      const easeE = u => u < 0 ? 0 : u > 1 ? 1 : u * u * (3 - 2 * u);
+      const drawE = (k) => {
         ctx.clearRect(0, 0, W, H);
-        const scale = Math.min(W, H) / 340;
-        const wr = (t % PUMP) * 235 + 10, wr2 = wr - 72;
-        const px = [], py = [], gl = [];
-        for (let i = 0; i < nodes.length; i++) {
-          const n = nodes[i];
-          const dx = n.d * scale - wr, g1 = Math.exp(-dx * dx / (2 * SIG * SIG));
-          const dx2 = n.d * scale - wr2, g2 = wr2 > 0 ? Math.exp(-dx2 * dx2 / (2 * SIG * SIG)) * 0.55 : 0;
-          const g = Math.min(1.5, g1 + g2);
-          const radius = n.d * scale * (1 + 0.022 * Math.sin(t * 0.8)) + g * 30;
-          let x = cx + Math.cos(n.a) * radius + Math.sin(t * n.sp + n.ph) * n.am * 1.6;
-          let y = cy + Math.sin(n.a) * radius * 0.92 + Math.cos(t * n.sp * 0.9 + n.ph) * n.am * 1.6;
-          const dxm = x - mx, dym = y - my, d2 = dxm * dxm + dym * dym;
-          if (d2 < R02 && d2 > 0.01) { const d = Math.sqrt(d2), f = (1 - d / R0) * 9; x += dxm / d * f; y += dym / d * f; }
-          px[i] = x; py[i] = y; gl[i] = g;
-        }
-        for (const [r, w] of [[wr, 1], [wr2, 0.55]]) {
-          if (r <= 0) continue;
-          const a = 0.14 * w * (1 - r / (235 * PUMP));
-          if (a <= 0) continue;
-          ctx.strokeStyle = rgba(a); ctx.lineWidth = 1.5;
-          ctx.beginPath(); ctx.ellipse(cx, cy, r, r * 0.92, 0, 0, TAU); ctx.stroke();
-        }
+        for (const p of ents) { p.dx = p.x + (p.hx - p.x) * k; p.dy = p.y + (p.hy - p.y) * k; }
         ctx.lineWidth = 1;
-        for (const [a, b] of edges) {
-          const g = (gl[a] + gl[b]) * 0.5;
-          ctx.strokeStyle = rgba(0.05 + 0.33 * Math.min(1, g));
-          ctx.beginPath(); ctx.moveTo(px[a], py[a]); ctx.lineTo(px[b], py[b]); ctx.stroke();
-        }
-        for (let i = 0; i < nodes.length; i++) {
-          const n = nodes[i];
-          ctx.fillStyle = rgba(0.22 + 0.7 * Math.min(1, gl[i] + (n.t === 0 ? 0.4 : 0)));
-          const s = (n.r + gl[i] * 2.4) * scale * 0.5;
-          ctx.beginPath(); ctx.arc(px[i], py[i], Math.max(0.6, s), 0, TAU); ctx.fill();
-        }
-        if (!still) requestAnimationFrame(frame);
+        const lim = 95 * 95;
+        for (let i = 0; i < EN; i++) { for (let j = i + 1; j < EN; j++) {
+          const a = ents[i], b = ents[j], dx = a.dx - b.dx, dy = a.dy - b.dy, d2 = dx * dx + dy * dy;
+          if (d2 < lim) { ctx.strokeStyle = rgba(0.10 + 0.42 * (1 - d2 / lim) * (0.4 + 0.6 * k)); ctx.beginPath(); ctx.moveTo(a.dx, a.dy); ctx.lineTo(b.dx, b.dy); ctx.stroke(); }
+        } }
+        for (const p of ents) { ctx.fillStyle = rgba(0.30 + 0.62 * k); ctx.beginPath(); ctx.arc(p.dx, p.dy, 1.4 + 1.2 * k, 0, TAU); ctx.fill(); }
       };
-      frame(performance.now());
+      if (still) {
+        for (const p of ents) { p.x = p.hx + rand(-6, 6); p.y = p.hy + rand(-6, 6); }
+        drawE(1);
+      } else {
+        const frameE = now => {
+          if (dead.v) return;
+          const T = (now - t0) / 1000;
+          const k = easeE((T - 1.0) / 6.0);
+          for (const p of ents) { p.x += p.vx * (1 - k); p.y += p.vy * (1 - k); if (p.x < 0 || p.x > W) p.vx *= -1; if (p.y < 0 || p.y > H) p.vy *= -1; }
+          drawE(k);
+          if (T > 12) { t0 = now; buildE(); }
+          requestAnimationFrame(frameE);
+        };
+        frameE(performance.now());
+      }
     }
 
     /* ---------- section worlds ---------- */
