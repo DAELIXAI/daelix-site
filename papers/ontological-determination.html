@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ontological Determination Before Medium Selection · DAELIX AI</title>
+<meta name="description" content="A framework in which the ontology of a proposition is determined before any medium is selected, with five proving tests and one refusal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&amp;family=IBM+Plex+Mono:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicon.png" sizes="512x512">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:#fff;color:#141414;font-family:Archivo,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:#000;color:#fff}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,3.2vw,44px)}
+header.bar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid #e6e6e6}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:16px;padding-bottom:16px}
+.mark{display:flex;align-items:center;gap:8px}
+.mark b{font-weight:600;font-size:15px;font-stretch:112%;letter-spacing:.13em}
+.mark .ai{font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8a8a8a;letter-spacing:.24em;align-self:flex-start;padding-top:2px}
+.back{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.22em;color:#4a4a4a;border-bottom:1px solid #d2d2d2;padding-bottom:2px;transition:border-color .2s,color .2s}
+.back:hover{color:#000;border-color:#000}
+.head{padding:clamp(56px,7vw,104px) 0 0}
+.kicker{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.32em;color:#9a9a9a;margin-bottom:26px}
+h1{margin:0;font-weight:400;font-stretch:112%;font-size:clamp(28px,3.6vw,46px);line-height:1.1;letter-spacing:-.015em;max-width:26ch;color:#000}
+.sub{margin:20px 0 0;font-size:clamp(17px,1.6vw,20px);line-height:1.42;color:#3a3a3a;font-weight:350;max-width:52ch;text-wrap:pretty}
+.meta{margin-top:34px;padding-top:22px;border-top:1px solid #1a1a1a;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.22em;color:#7a7a7a;line-height:2.1}
+.meta b{color:#141414;font-weight:500}
+article{padding:clamp(44px,5.5vw,80px) 0 clamp(72px,9vw,140px)}
+article h2{margin:clamp(46px,5.5vw,76px) 0 0;font-weight:400;font-stretch:112%;font-size:clamp(22px,2.5vw,30px);line-height:1.18;letter-spacing:-.008em;color:#000;max-width:30ch;text-wrap:pretty}
+article h3{margin:clamp(30px,3.4vw,44px) 0 0;font-weight:500;font-size:17.5px;line-height:1.32;color:#000;font-stretch:112%;max-width:44ch;text-wrap:pretty}
+article p{margin:18px 0 0;font-size:16.5px;line-height:1.78;color:#1c1c1c;font-weight:350;max-width:68ch;text-wrap:pretty}
+article ol,article ul{margin:18px 0 0;padding-left:22px;max-width:68ch}
+article li{font-size:16.5px;line-height:1.78;color:#1c1c1c;font-weight:350;margin:8px 0;text-wrap:pretty}
+article b,article strong{color:#000;font-weight:600}
+article em,article i{font-style:italic}
+article hr{border:0;border-top:1px solid #e6e6e6;margin:clamp(40px,5vw,68px) 0 0}
+figure{margin:clamp(30px,3.6vw,48px) 0 0;max-width:100%}
+pre{margin:0;overflow-x:auto;background:#fafafa;border:1px solid #e6e6e6;padding:22px 24px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.62;color:#141414;white-space:pre}
+figcaption{margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.2em;color:#8a8a8a;line-height:1.9;max-width:68ch}
+table{margin:22px 0 0;border-collapse:collapse;width:100%;max-width:68ch;font-size:15.5px}
+th,td{text-align:left;padding:11px 14px 11px 0;border-bottom:1px solid #e6e6e6;font-weight:350;color:#1c1c1c;vertical-align:top}
+th{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.2em;color:#8a8a8a;font-weight:400}
+.foot{border-top:1px solid #1a1a1a;padding:30px 0 60px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.22em;color:#8a8a8a;line-height:2.2}
+.foot a{border-bottom:1px solid #d2d2d2;color:#4a4a4a}
+.foot a:hover{color:#000;border-color:#000}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="/">
+      <svg viewBox="14 14 68 68" xmlns="http://www.w3.org/2000/svg" style="height:21px;width:auto;display:block">
+        <defs><clipPath id="dc"><polygon points="20,78 27,18 37,18 30,78"></polygon><polygon points="41,18 59,18 76,35 76,61 59,78 41,78 41,66 54,66 65,55 65,41 54,29 41,29"></polygon></clipPath></defs>
+        <g fill="#0d0d0d"><polygon points="20,78 27,18 37,18 30,78"></polygon><polygon points="41,18 59,18 76,35 76,61 59,78 41,78 41,66 54,66 65,55 65,41 54,29 41,29"></polygon></g>
+        <g clip-path="url(#dc)"><rect x="-20" y="10" width="7" height="76" fill="#ffffff"><animate attributeName="x" values="-20;100" dur="3.4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1"></animate></rect></g>
+      </svg>
+      <b>AELIX</b><span class="ai">AI</span>
+    </a>
+    <a class="back" href="/#proving">&larr; THE PROVING</a>
+  </div>
+</header>
+
+<div class="head"><div class="wrap">
+  <div class="kicker">DAELIX AI &middot; WORKING PAPER &middot; STUDY 002</div>
+  <h1>Ontological determination before medium selection</h1>
+  <p class="sub">A framework for agentic conceptual translation, with five proving tests.</p>
+  <div class="meta"><b>BAILEY BOOTH</b> &middot; FOUNDER &amp; DIRECTOR, DAELIX AI<br>PUBLISHED 29 AUGUST 2026 &middot; INTERNAL STUDY, NOT PEER REVIEWED<br>RESULT &middot; THE NULL RETURN IS A VALID OUTPUT</div>
+</div></div>
+
+<article><div class="wrap">
+<hr>
+<h3>Abstract</h3>
+<p>Generative systems are conventionally organised around an available medium. A model is selected, a prompt is composed, and the proposition is fitted to whatever that model produces. The medium is therefore settled before the question of what kind of thing the proposition is has been asked, and the medium performs the selection that ought to have been performed by the argument.</p>
+<p>This paper describes an inversion of that order and reports five proving tests conducted against it. In the framework, the ontology of a conceptual proposition is determined prior to the selection of any medium, form or method of production. The determination is recorded rather than assumed, remains auditable after the fact, and is permitted to return the null case, in which no artefact is produced.</p>
+<p>Five propositions of maximal ontological distance were selected, drawn from Alexander (1965), Han (2010), Scheffer (2009), Schelling (1978) and Wittgenstein (1953, §293). The runs produced four artefacts and one refusal. The four artefacts share no ground, format, palette, orientation or medium, since the four propositions returned four distinct ontologies; the fifth returned none of the framework's five categories and terminated prior to medium selection.</p>
+<p>Two fully rendered artefacts were destroyed during the runs rather than corrected. In both cases every constituent component had been legitimately derived and the failure existed only in the assembled composition. This is reported as an open finding rather than a resolved one, and constitutes the clearest weakness the corpus has so far exposed.</p>
+<p><b>Keywords:</b> computational creativity, agentic systems, ontological determination, medium selection, generative art, conceptual translation, procedural instantiation, multi-agent simulation, negative results</p>
+<p><b>Scope note.</b> This is a working paper reporting an internal method and its first proving runs. It is not a literature review, and it does not claim priority over prior work in computational creativity. Its contribution is a specific ordering constraint, a set of refusal procedures, and an empirical record of where those procedures failed.</p>
+<hr>
+<h2>1. The problem</h2>
+<p>The question is deceptively simple. Given a conceptual proposition, how can an artificial system determine what kind of artefact, if any, that proposition warrants?</p>
+<p>In practice the question is usually answered by default rather than by determination. A proposition concerning time becomes an image, because images are what the available system produces. A proposition concerning structure becomes an animation, because animation is available and animation appears considered. No decision is taken; the decision is made by what is to hand.</p>
+<p>The consequence is convergence, and it arrives from two directions simultaneously. Outputs converge on the house style of whatever model generated them, which is comparatively easy to detect. They also converge on the established genre figure for the subject matter, which is not, because each individual step toward that figure can be defended in isolation. A system that reasons its way to the textbook diagram has reasoned correctly and arrived nowhere.</p>
+<p>The framework described here attempts to make the determination explicit, to place it first, and to make the negative answer structurally available.</p>
+<h3>1.1 Positioning</h3>
+<p>The distinction being drawn is narrower than the general question of machine creativity, and it is worth stating precisely what is and is not claimed.</p>
+<p>Boden's distinction between exploratory and transformational creativity concerns movement within and beyond a conceptual space. The concern here is prior to that: whether the system has correctly identified which conceptual space the proposition inhabits, before any exploration or transformation is attempted. A system may explore an aesthetic space with great facility and still have entered the wrong one, because the medium was fixed before the proposition was examined.</p>
+<p>Similarly, the framework makes no claim about autonomy or authorship. The determinations are made within a specified procedure, they are recorded in full, and they are ruled on by an operator. What is claimed is that the ordering constraint is consequential, that it is testable, and that it produced structurally different outcomes across propositions that a medium-first process would have rendered similarly.</p>
+<h2>2. The framework</h2>
+<figure><img src="figures/FIG_05_framework.jpg" alt="Figure 5. The determination sequence. Ontology is fixed before medium; the medium determination is a refusal test, not a menu." style="width:100%;height:auto;display:block;border:1px solid #e6e6e6"><figcaption>Figure 5. The determination sequence. Ontology is fixed before medium; the medium determination is a refusal test, not a menu.</figcaption></figure>
+<p>The system separates four determinations ordinarily collapsed into a single act of judgement.</p>
+<p>The <b>semantic genotype</b> states what the proposition asserts, without ornament, together with an explicit register of what it does not assert and what the artefact may therefore never claim. In practice the second register proves the more useful of the two, since it eliminates the obvious manifestations before they are constructed.</p>
+<p>The <b>ontological determination</b> runs before medium, form and mechanism. It asks what kind of thing the idea is: spatial, temporal, behavioural, material or sequential. It is permitted to return none of them.</p>
+<p>The <b>medium determination</b> is reached only once the ontology is fixed, and takes the form of a refusal test rather than a menu of options. Its six questions are set out in Table 2.</p>
+<p>The <b>production genome</b> establishes which agents, simulations, generations, edits, evaluations and rejection procedures are required to bring the determined phenotype into existence. This layer is conditional by design. Where generation would introduce claims possessing no referent, generation is refused, and the artefact is constructed procedurally or executed as a simulation instead.</p>
+<p>Two gates run on any candidate proposing to move. The <b>ornamental motion test</b> asks what is lost if the movement is removed, and treats movement that loses nothing as decoration. The <b>static reduction test</b> asks whether a still image would be stronger, so that motion is never retained for effect and stillness is never selected for convenience. Across the five tests these gates returned opposite verdicts on propositions that superficially resembled one another, which is the strongest available evidence that they discriminate rather than ratify.</p>
+<p>Each run is recorded as a seventeen-stage trace, including every rejected branch and its stated reason. In this framework the specification is the deliverable and the artefact is its output. Where there is no artefact, the specification stands alone, and this proved consequential.</p>
+<h2>3. Method</h2>
+<p>Five propositions were selected for maximal ontological distance from one another. None was selected because it suggested a visual treatment, and one was selected specifically because we suspected it might not admit of one.</p>
+<p>Every quantitative statement appearing in any artefact is measured from the run that produced it. No borrowed figure, third-party statistic or invented specimen value appears in any artefact or in this paper. Where a claim about an artefact could not be verified by measurement it was withdrawn, and in one instance it was withdrawn after measurement demonstrated it to be false as stated.</p>
+<hr>
+<h2>4. The five tests</h2>
+<h3>4.1 Alexander, <i>A City Is Not a Tree</i> (1965)</h3>
+<figure><img src="figures/FIG_01_ALEXANDER_subtraction.jpg" alt="Figure 1" style="width:100%;height:auto;display:block;border:1px solid #e6e6e6"><figcaption>Figure 1</figcaption></figure>
+<p><b>Figure 1.</b> Procedural construction, 1600 × 1740. Shared membership measured at 35.2 per cent of total membership; both states occupy an identical footprint.</p>
+<p>Alexander's proposition is that a semi-lattice, in which units overlap and share membership, is reduced by planners to a tree, in which they do not. The city possesses the first structure; what is built possesses the second.</p>
+<p>The obvious mechanism is comparison, and comparison was rejected. Alexander does not describe two things placed side by side for inspection but a removal: the tree is what remains once overlap is deleted. The mechanism was accordingly derived as subtraction, and the artefact presents the same ground twice, the second instance with shared membership taken out. Both states were forced onto an identical footprint so that the second reads as the first reduced rather than as a different drawing.</p>
+<p>Both motion gates were run and motion was rejected. Animating the deletion would have invented an event the source does not contain; Alexander describes a reduction that has already occurred and is now the condition of the built environment, not a process observed in progress.</p>
+<p>Generation was refused, on a ground that generalises to every subsequent test. An image model asked to produce overlap will produce a picture of overlap, and the stated 35.2 per cent would then constitute a caption attached to an image rather than a property measurable from it.</p>
+<p>The house technical grammar was likewise refused. Alexander's essay is a criticism of technocratic reduction, and the apparatus of a formal technical drawing would have performed upon his argument the very operation to which that argument objects.</p>
+<p>An earlier version was destroyed. It rendered shared membership at 14.5 per cent, which read as incidental contact between units rather than as pervasive fabric, and therefore understated the proposition it existed to state.</p>
+<h3>4.2 Han, <i>The Burnout Society</i> (2010)</h3>
+<figure><img src="figures/FIG_02_HAN_accumulation.jpg" alt="Figure 2" style="width:100%;height:auto;display:block;border:1px solid #e6e6e6"><figcaption>Figure 2</figcaption></figure>
+<p><b>Figure 2.</b> Simulation, 1080 × 1350, 30 seconds, silent. Terminal frame. Thirty-eight strokes; terminal state at 25.4 seconds; field 94.9 per cent occupied at close.</p>
+<p>Han argues that exploitation now occurs without domination. The disciplinary society and its external master have been displaced by the achievement-subject, which exploits itself, and self-exploitation is the more efficient of the two precisely because it is accompanied by a sensation of freedom.</p>
+<p>The obvious manifestation is two figures, an exploiter and an exploited. It was rejected at branch selection on the ground that it falsifies the proposition rather than expressing it: introducing a second entity restores the master Han says has departed. A field of many agents was rejected on a related ground, since a crowd imports social comparison, whereas Han's subject measures itself against nothing but itself.</p>
+<p>The mechanism was derived instead as follows. Every achievement is immediately reclassified as the baseline that must now be cleared. Achievement does not accumulate as rest; it accumulates as floor. A single agent reaches upward, and the height attained becomes the height from which it next begins. The frame is finite. The run terminates when the agent can no longer produce a reach clearing its own deposit, and it does not cease at that point but continues to attempt reaches falling below the minimum, which therefore deposit nothing.</p>
+<p>The work is silent, and the silence is a determination rather than an omission: any sound would imply a source, and the proposition is that nothing arrives from outside.</p>
+<h3>4.3 Scheffer, <i>Critical Transitions in Nature and Society</i> (2009)</h3>
+<figure><img src="figures/FIG_03_SCHEFFER_response.jpg" alt="Figure 3" style="width:100%;height:auto;display:block;border:1px solid #e6e6e6"><figcaption>Figure 3</figcaption></figure>
+<p><b>Figure 3.</b> Simulation, 1080 × 1080, 27 seconds, silent. Terminal frame. Deposition is weighted by dwell rather than distance, so the record represents time spent rather than ground covered.</p>
+<p>Scheffer's contribution is not that systems undergo transitions. His contribution is that the state is uninformative while the capacity to return degrades invisibly beneath it, and that this loss is measurable in advance as critical slowing down.</p>
+<p>The artefact applies an identical disturbance, of magnitude 0.34, twenty-four times, and displays nothing except the recovery. The underlying condition is never drawn at any point. There is no axis in the frame, no basin and no threshold.</p>
+<p>The measured recovery times are 0.08, 0.08, 0.08, 0.08, 0.12, 0.12, 0.12, 0.17, 0.21, 0.21, 0.25, 0.29, 0.38, 0.58 and 1.04 seconds: thirteen times slower, with the resting position unchanged throughout. One identical disturbance then fails to return. Eight further disturbances of identical magnitude are applied in the reverse direction and none returns. The condition is subsequently restored well beyond the point at which it broke, and nothing returns.</p>
+<p>The dynamics are the cusp normal form, which matters more than it may appear. The transition points are not placed; they emerge where the cubic loses a root. Critical slowing down falls out of the same equation, since the restoring force vanishes as the fold is approached, and it was measured collapsing from 3.305 to 0.025 across the run. No line of the implementation animates the slowing. It is a consequence rather than an effect.</p>
+<h3>4.4 Schelling, <i>Micromotives and Macrobehavior</i> (1978)</h3>
+<figure><img src="figures/FIG_04_SCHELLING_emergence.jpg" alt="Figure 4" style="width:100%;height:auto;display:block;border:1px solid #e6e6e6"><figcaption>Figure 4</figcaption></figure>
+<p><b>Figure 4.</b> Multi-agent simulation, 1080 × 1350, 20.4 seconds, silent. Equilibrium frame. Each mark encodes surplus above its own stated preference; population kind is not encoded at any point.</p>
+<p>Schelling's finding is not that separation occurs, and this is the most consistently mis-stated result in the corpus. His finding is that mild preferences produce, through nothing but repeated local relocation, an outcome that no individual selected, with no coordinator and no malice present anywhere in the system, and that the macro-outcome cannot be read backwards to recover the micro-motive that generated it.</p>
+<p>The simulation places 3,240 agents on a sixty by sixty toroidal lattice at ten per cent vacancy. Each agent perceives its eight adjacent cells and nothing further. Each requires only that a third of its occupied neighbours be like it, which is a tolerant preference, since it would be content in a two to one minority. Dissatisfied agents relocate to a random vacancy: they move away, never toward, and the destination is arbitrary.</p>
+<p>The decision carrying the work is that kind is never rendered. Every illustration of this model of which we are aware encodes the population distinction, which is the single variable the argument is not about. Here each mark encodes only its surplus above its own stated preference. What emerges is that the boundary between the two populations draws itself, out of a variable containing no information about kind. The macro-order is neither designed nor, in the final artefact, encoded.</p>
+<p>One claim was verified before being written. We had intended to state that the pale reticulation in the equilibrium frame constitutes the interface between the two populations. Measurement demonstrated this false as stated: every pale agent does occupy an interface, but only 31.0 per cent of dark agents are interior, and 69.8 per cent of the population touches the other group. The corrected result is considerably stronger. Interior agents finish at 100 per cent like-neighbours and interface agents at 65 per cent, and both asked for 33.3 per cent. No agent, at any position within the resulting structure, finishes near what it requested.</p>
+<h3>4.5 Wittgenstein, <i>Philosophical Investigations</i> §293 (1953)</h3>
+<p><i>No figure. No artefact was produced.</i></p>
+<p>§293 is routinely read as a claim concerning the privacy of inner experience. That reading is not Wittgenstein's. His conclusion is that the thing in the box has no place in the language-game at all, not even as a something, since the box might be empty, and that one may divide through by it because it cancels out. The target is the object-and-designation model of how sensation-terms acquire meaning, not epistemic access to other minds.</p>
+<p>Correcting this at source interpretation removed the most readily available artefact. Under the sceptical reading, a sealed opaque container is a defensible and visually satisfying object. Under the argument as Wittgenstein makes it, that object stages the misreading and grants the beetle precisely the role the argument denies it.</p>
+<p>Nine candidate manifestations were enumerated and each killed with a stated reason. A box containing something asserts that the private object exists and has been represented. An empty box asserts a fact nobody is positioned to assert. Boxes with differing contents assert the same in the opposite direction. A mechanism carrying a conspicuous, elaborately housed, load-free component was the closest near-miss, since cancelling out is precisely what a load-free component does, and it fails because it nonetheless asserts that a component is present. Two indistinguishable artefacts bearing contradictory captions relocate the argument into the captions, where the accompanying text performs the work.</p>
+<p>The strongest candidate was a simulation: a language-game in which a token circulates while box contents are varied across the cases <i>different</i>, <i>changing</i> and <i>absent</i>, measuring whether the public game is invariant under substitution. Dividing through by the thing in the box is literally an invariance claim, and invariance is measurable. This candidate survived every falsification check available to it and would have produced a defensible artefact together with a persuasive figure.</p>
+<p>It was rejected because the figure would have possessed no referent. §293 is a grammatical remark rather than an empirical claim about a system, and any simulation of it returns exactly what its construction encodes. Should the public mechanism not read the contents, invariance follows by architecture; should it read them, the coupling selected determines the outcome. In either case the measurement restates the investigator's own assumptions in machine form and presents them as evidence, which is the same fault that destroyed the first version of the Alexander artefact, arriving in a considerably more respectable disguise.</p>
+<p>The four preceding tests could be executed rather than depicted because each possessed a real mechanism whose behaviour was not chosen in advance. §293 possesses no mechanism. Nothing accumulates, responds, aggregates or transforms. The ontological determination returned none of the five categories, the run terminated prior to medium selection, and no artefact was produced.</p>
+<hr>
+<h2>5. Results</h2>
+<figure><img src="figures/TABLE_1_determinations.jpg" alt="Table 1. The five determinations. Four ontologies, one null return." style="width:100%;height:auto;display:block;border:1px solid #e6e6e6"><figcaption>Table 1. The five determinations. Four ontologies, one null return.</figcaption></figure>
+<p><b>Table 1. Determinations and outcomes across the five proving tests.</b></p>
+<table><thead><tr><th>Test</th><th>Source</th><th>Ontological determination</th><th>Medium determined</th><th>Motion verdict</th><th>Outcome</th></tr></thead><tbody><tr><td>01</td><td>Alexander (1965)</td><td>spatial + juxtapositional</td><td>procedural construction, static</td><td>rejected</td><td>disappearance made perceptible</td></tr><tr><td>02</td><td>Han (2010)</td><td>temporal + accumulative</td><td>simulation, 30s, silent</td><td>required</td><td>accumulation made perceptible</td></tr><tr><td>03</td><td>Scheffer (2009)</td><td>temporal + responsive</td><td>simulation, 27s, silent</td><td>required</td><td>changing response made perceptible</td></tr><tr><td>04</td><td>Schelling (1978)</td><td>behavioural + aggregative</td><td>multi-agent simulation, 20.4s, silent</td><td>required</td><td>emergence made perceptible without being encoded</td></tr><tr><td>05</td><td>Wittgenstein (1953)</td><td><b>null</b></td><td><b>not reached</b></td><td>not reached</td><td><b>no artefact</b></td></tr></tbody></table>
+<p><b>Table 2. Medium refusal test, six questions, across the five tests.</b></p>
+<table><thead><tr><th>Question</th><th>01 Alexander</th><th>02 Han</th><th>03 Scheffer</th><th>04 Schelling</th><th>05 Wittgenstein</th></tr></thead><tbody><tr><td>Perceivable as a single state?</td><td>yes</td><td>no</td><td>no</td><td>no</td><td>not reached</td></tr><tr><td>Involves change through time?</td><td>no</td><td>yes</td><td>yes</td><td>yes, as mechanism</td><td>not reached</td></tr><tr><td>Requires behaviour to be understood?</td><td>no</td><td>yes</td><td>yes</td><td>yes, definitionally</td><td>not reached</td></tr><tr><td>Material or spatial?</td><td>yes</td><td>no</td><td>no</td><td>incidental</td><td>not reached</td></tr><tr><td>Depends on succession or juxtaposition?</td><td>yes</td><td>no</td><td>no</td><td>no</td><td>not reached</td></tr><tr><td>Requires sound, or is silence determined?</td><td>n/a</td><td>silence determined</td><td>silence determined</td><td>silence determined</td><td>not reached</td></tr></tbody></table>
+<p><b>Table 3. Measured parameters and outcomes.</b></p>
+<table><thead><tr><th>Test</th><th>Principal measurement</th><th>Value</th><th>Robustness</th></tr></thead><tbody><tr><td>01</td><td>shared membership</td><td>35.2% of total membership</td><td>single construction; v1 destroyed at 14.5%</td></tr><tr><td>02</td><td>strokes to terminal state</td><td>38 strokes, terminal 25.4s, field 94.9% occupied</td><td>single run</td></tr><tr><td>03</td><td>recovery time, first to last</td><td>0.08s → 1.04s, 13× slower, rest position unchanged</td><td>restoring force 3.305 → 0.025</td></tr><tr><td>03</td><td>reverse disturbances returning</td><td>0 of 8, condition restored past the break</td><td>emergent from cusp normal form</td></tr><tr><td>04</td><td>requested vs received</td><td>33.3% requested, 75.5% received, +42.2pp</td><td>five seeds, 72.8%–75.5%, 1,249–1,347 moves</td></tr><tr><td>04</td><td>interior vs interface agents</td><td>100% and 65% like-neighbours respectively</td><td>claim verified and corrected before publication</td></tr><tr><td>05</td><td>candidates enumerated and rejected</td><td>9 of 9</td><td>terminal state NO ARTEFACT</td></tr></tbody></table>
+<p>Generation by image model was refused in all five runs on identical grounds: an image model produces a picture resembling the phenomenon, and that resemblance would render every measured figure in the artefact a claim without a referent.</p>
+<h2>6. Two destructions, and their common structure</h2>
+<figure><img src="figures/FIG_07_destroyed.jpg" alt="Figure 7. The two destroyed renders. Every component legitimately derived; the assembled composition wrong in both cases." style="width:100%;height:auto;display:block;border:1px solid #e6e6e6"><figcaption>Figure 7. The two destroyed renders. Every component legitimately derived; the assembled composition wrong in both cases.</figcaption></figure>
+<p>Two artefacts were rendered in full and subsequently destroyed rather than repaired.</p>
+<p>The first version of the Han work placed a single agent on a closed ring, emitting the standards it was then obliged to chase. Every element was derived from the semantic model. The assembled composition read as a clock face, and a clock is an external measure, which is exactly what Han holds to be absent.</p>
+<p>The first version of the Scheffer work was a trajectory in parameter space. The dynamics were correct and emergent and the transition points were not placed, yet the composition was a B-H magnetisation curve: the textbook figure for hysteresis. A viewer who has encountered one learns nothing from it. It also drew the control parameter as an axis, rendering the transition something observed from outside by a measurer, when the proposition holds that from inside there is nothing to observe.</p>
+<p><b>Table 4. Comparison of the two destroyed versions.</b></p>
+<table><thead><tr><th></th><th>Han, v1</th><th>Scheffer, v1</th></tr></thead><tbody><tr><td>Composite read as</td><td>a clock face</td><td>a B-H magnetisation curve</td></tr><tr><td>Failure classification</td><td>semantic falsification</td><td>genre reproduction</td></tr><tr><td>Components individually derived</td><td>yes</td><td>yes</td></tr><tr><td>Level at which the gate inspects</td><td>component</td><td>component</td></tr><tr><td>Level at which the failure resided</td><td>assembly</td><td>assembly</td></tr><tr><td>Detected by</td><td>editorial review, post-render</td><td>proposed condition, applied manually</td></tr></tbody></table>
+<p>The two failures differ in consequence. The first falsifies the proposition; the second falsifies nothing but contributes nothing either. They share a structure, and that structure is the finding: in both cases every individual component had been legitimately derived, and the failure existed only in the assembly.</p>
+<p>The framework's anti-genericity procedure inspects components. It asks whether a mechanism is a generic flowchart, a node cloud, a decorative diagram. Both compositions passed that inspection, because all of their parts had been derived from the semantic model. No step in the procedure asks what the derived parts, once assembled, happen to resemble.</p>
+<p>The proposed remedy is a single additional condition, run on the composite rather than on the components: prior to rendering, name the three objects the assembled composition most closely resembles to a viewer who has not read the source, and reject it if any of those objects imports an entity, measure, agent or structure the semantic genotype explicitly excludes. Applied by hand, the condition identified the Scheffer trajectory as a B-H curve and terminated it before publication. Applied to the Schelling work, it flagged the lattice as genre-adjacent, examined it, and returned a retain verdict on the ground that the neighbourhood structure is required by the mechanism rather than imported for appearance. A gate that only ever refuses will eventually refuse something of value, and so the second verdict carries as much weight as the first.</p>
+<p>The condition has not been installed. Two occurrences across three tests constitute grounds rather than a corpus, and it is recorded as an open finding rather than an amendment to the system.</p>
+<p>The general form of the finding may be stated as follows. <b>Convergent derivation onto a genre figure is still the genre figure. Derivation is not protection.</b></p>
+<h2>7. The null result</h2>
+<figure><img src="figures/FIG_06_no_artefact.jpg" alt="Figure 6. Test 05. The determination returned none of the five categories and the run terminated before medium selection." style="width:100%;height:auto;display:block;border:1px solid #e6e6e6"><figcaption>Figure 6. Test 05. The determination returned none of the five categories and the run terminated before medium selection.</figcaption></figure>
+<p>The fifth test establishes that the preceding four were determinations rather than habits.</p>
+<p>A framework that invariably produces something has demonstrated that it can be applied. It has not demonstrated that its determinations are load-bearing. The negative case is the sole case in which the determination layer alters whether anything occurs at all, and it is therefore the sole case in which that layer can be observed doing work.</p>
+<p>The obvious response to a null ontology is the addition of a sixth category. It was refused, and the refusal carries more consequence than the finding prompting it. Adding one would have the system reason thus: we do not presently know how to make anything from this, therefore we shall create a category permitting us to continue producing. This reverses the architecture. A null return is not a missing category. It is the correct answer, and the capacity to return it is the capability under test.</p>
+<h2>8. Limitations</h2>
+<p>Five tests do not constitute a corpus. The claim that the framework generalises across ontologies rests upon four artefacts and one refusal, which is suggestive rather than established.</p>
+<p>The evaluators are procedures rather than independent systems. The framework specifies nine evaluations across three groups and runs them as distinct checks with recorded verdicts, but they are not independent in the strong sense. A genuinely independent evaluator would constitute a separate system with no access to the production trace, and no such system has been built.</p>
+<p>Both composite-reading failures were detected by review rather than by the gate. The first was found in editorial review following a complete render; the second by manually applying a condition that remains uninstalled. Neither was caught by the framework as presently constituted, and this is its clearest current weakness.</p>
+<p>All five runs were conducted under a single operator. The determinations are recorded and auditable, which is the purpose of the trace, but they have not been independently reproduced.</p>
+<p>Finally, the five propositions were selected for ontological distance rather than chosen adversarially by a third party. A source selected in order to defeat the framework would constitute a stronger test than a source selected in order to exercise it, and no such source has yet been supplied.</p>
+<h2>9. Conclusion</h2>
+<p>The governing principle is that the agent does not begin by asking what should be made. It begins by determining what kind of thing the idea is.</p>
+<p>Across five propositions the framework produced a static procedural construction, a temporal accumulation, a responsive dynamical system, a multi-agent simulation in which the macrostructure was never encoded into the representation, and one refusal to produce anything whatever. It destroyed two of its own completed artefacts on grounds that were structural rather than aesthetic. It declined to expand its own vocabulary at the single moment when expansion would have permitted a fifth artefact.</p>
+<p>The identity of such a system is therefore neither a visual style nor a medium. <b>The identity is the method of translation.</b></p>
+<p>The question at this stage is not whether the outputs are attractive. It is whether the methodology generalises across radically different conceptual ontologies without collapsing into a house style, an image-generation pipeline, or an aesthetic prior. Five tests suggest that it can. They do not yet show it.</p>
+<p>The corpus continues.</p>
+<hr>
+<h2>References</h2>
+<p>Alexander, C. (1965) 'A City is Not a Tree', <i>Architectural Forum</i>, 122(1), pp. 58–62 and 122(2), pp. 58–62.</p>
+<p>Boden, M. A. (2004) <i>The Creative Mind: Myths and Mechanisms</i>. 2nd edn. London: Routledge.</p>
+<p>Han, B.-C. (2015) <i>The Burnout Society</i>. Translated by E. Butler. Stanford: Stanford University Press. Originally published as <i>Müdigkeitsgesellschaft</i> (2010). Berlin: Matthes &amp; Seitz.</p>
+<p>Scheffer, M. (2009) <i>Critical Transitions in Nature and Society</i>. Princeton: Princeton University Press.</p>
+<p>Schelling, T. C. (1971) 'Dynamic Models of Segregation', <i>Journal of Mathematical Sociology</i>, 1(2), pp. 143–186.</p>
+<p>Schelling, T. C. (1978) <i>Micromotives and Macrobehavior</i>. New York: W. W. Norton.</p>
+<p>Wittgenstein, L. (1953) <i>Philosophical Investigations</i>. Translated by G. E. M. Anscombe. Oxford: Blackwell.</p>
+<hr>
+<p><i>Complete seventeen-stage production traces for all five tests, including rejected branches, destroyed versions and measured parameters, are held as specification documents. Supplementary video for tests 02, 03 and 04 is published separately.</i></p>
+<p><i>DAELIX AI is a business operated in the United Kingdom by Bailey Booth, author of four books.</i></p>
+</div></article>
+
+<div class="foot"><div class="wrap">
+  DAELIX AI &middot; AI OPERATIONS &middot; UNITED KINGDOM &middot; MMXXVI<br>
+  <a href="/#proving">RETURN TO THE PROVING</a> &nbsp;&middot;&nbsp; <a href="/">DAELIXAI.COM</a> &nbsp;&middot;&nbsp; <a href="/governance.html">GOVERNANCE</a>
+</div></div>
+
+</body>
+</html>

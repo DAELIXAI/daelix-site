@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Psychoanthrofuturism · DAELIX AI</title>
+<meta name="description" content="A two-part diagnostic framework describing generative and recommender systems as a cognitive environment, with the mechanism, the limits of self-observation, and the falsification conditions stated.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&amp;family=IBM+Plex+Mono:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicon.png" sizes="512x512">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:#fff;color:#141414;font-family:Archivo,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:#000;color:#fff}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,3.2vw,44px)}
+header.bar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid #e6e6e6}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:16px;padding-bottom:16px}
+.mark{display:flex;align-items:center;gap:8px}
+.mark b{font-weight:600;font-size:15px;font-stretch:112%;letter-spacing:.13em}
+.mark .ai{font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8a8a8a;letter-spacing:.24em;align-self:flex-start;padding-top:2px}
+.back{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.22em;color:#4a4a4a;border-bottom:1px solid #d2d2d2;padding-bottom:2px;transition:border-color .2s,color .2s}
+.back:hover{color:#000;border-color:#000}
+.head{padding:clamp(56px,7vw,104px) 0 0}
+.kicker{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.32em;color:#9a9a9a;margin-bottom:26px}
+h1{margin:0;font-weight:400;font-stretch:112%;font-size:clamp(28px,3.6vw,46px);line-height:1.1;letter-spacing:-.015em;max-width:26ch;color:#000}
+.sub{margin:20px 0 0;font-size:clamp(17px,1.6vw,20px);line-height:1.42;color:#3a3a3a;font-weight:350;max-width:52ch;text-wrap:pretty}
+.meta{margin-top:34px;padding-top:22px;border-top:1px solid #1a1a1a;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.22em;color:#7a7a7a;line-height:2.1}
+.meta b{color:#141414;font-weight:500}
+article{padding:clamp(44px,5.5vw,80px) 0 clamp(72px,9vw,140px)}
+article h2{margin:clamp(46px,5.5vw,76px) 0 0;font-weight:400;font-stretch:112%;font-size:clamp(22px,2.5vw,30px);line-height:1.18;letter-spacing:-.008em;color:#000;max-width:30ch;text-wrap:pretty}
+article h3{margin:clamp(30px,3.4vw,44px) 0 0;font-weight:500;font-size:17.5px;line-height:1.32;color:#000;font-stretch:112%;max-width:44ch;text-wrap:pretty}
+article p{margin:18px 0 0;font-size:16.5px;line-height:1.78;color:#1c1c1c;font-weight:350;max-width:68ch;text-wrap:pretty}
+article ol,article ul{margin:18px 0 0;padding-left:22px;max-width:68ch}
+article li{font-size:16.5px;line-height:1.78;color:#1c1c1c;font-weight:350;margin:8px 0;text-wrap:pretty}
+article b,article strong{color:#000;font-weight:600}
+article em,article i{font-style:italic}
+article hr{border:0;border-top:1px solid #e6e6e6;margin:clamp(40px,5vw,68px) 0 0}
+figure{margin:clamp(30px,3.6vw,48px) 0 0;max-width:100%}
+pre{margin:0;overflow-x:auto;background:#fafafa;border:1px solid #e6e6e6;padding:22px 24px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.62;color:#141414;white-space:pre}
+figcaption{margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.2em;color:#8a8a8a;line-height:1.9;max-width:68ch}
+table{margin:22px 0 0;border-collapse:collapse;width:100%;max-width:68ch;font-size:15.5px}
+th,td{text-align:left;padding:11px 14px 11px 0;border-bottom:1px solid #e6e6e6;font-weight:350;color:#1c1c1c;vertical-align:top}
+th{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.2em;color:#8a8a8a;font-weight:400}
+.foot{border-top:1px solid #1a1a1a;padding:30px 0 60px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.22em;color:#8a8a8a;line-height:2.2}
+.foot a{border-bottom:1px solid #d2d2d2;color:#4a4a4a}
+.foot a:hover{color:#000;border-color:#000}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="/">
+      <svg viewBox="14 14 68 68" xmlns="http://www.w3.org/2000/svg" style="height:21px;width:auto;display:block">
+        <defs><clipPath id="dc"><polygon points="20,78 27,18 37,18 30,78"></polygon><polygon points="41,18 59,18 76,35 76,61 59,78 41,78 41,66 54,66 65,55 65,41 54,29 41,29"></polygon></clipPath></defs>
+        <g fill="#0d0d0d"><polygon points="20,78 27,18 37,18 30,78"></polygon><polygon points="41,18 59,18 76,35 76,61 59,78 41,78 41,66 54,66 65,55 65,41 54,29 41,29"></polygon></g>
+        <g clip-path="url(#dc)"><rect x="-20" y="10" width="7" height="76" fill="#ffffff"><animate attributeName="x" values="-20;100" dur="3.4s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1"></animate></rect></g>
+      </svg>
+      <b>AELIX</b><span class="ai">AI</span>
+    </a>
+    <a class="back" href="/#proving">&larr; THE PROVING</a>
+  </div>
+</header>
+
+<div class="head"><div class="wrap">
+  <div class="kicker">DAELIX AI &middot; WORKING PAPER &middot; STUDY 001</div>
+  <h1>Psychoanthrofuturism: cognitive reorganisation under algorithmic feedback systems</h1>
+  <p class="sub">A two-part diagnostic framework: the condition, and the mechanism operating within it.</p>
+  <div class="meta"><b>BAILEY BOOTH</b> &middot; FOUNDER &amp; DIRECTOR, DAELIX AI<br>FOUNDER, THELIFTEDVEIL &middot; AUTHOR OF <i>PSYCHOANTHROFUTURISM, AI AND CORTICAL ACCELERATIONISM</i><br>PUBLISHED 25 AUGUST 2026 &middot; DIAGNOSTIC SYSTEMS THEORY &middot; NOT PEER REVIEWED<br>FALSIFICATION CONDITIONS &middot; SECTION 4.4, STATED AND UNQUALIFIED</div>
+</div></div>
+
+<article><div class="wrap">
+<h3>Abstract</h3>
+<p>This paper sets out a two-part diagnostic framework describing the operation of generative and recommender systems in relation to human cognition within connected literate populations. The first part, psychoanthrofuturism, is the condition-level description: it treats artificial intelligence not as an external instrument acted upon by a bounded subject but as a cognitive environment within which subject formation occurs, within the bounded population specified. The second part, cortical accelerationism, is the mechanism layer of that description and nothing wider. It is defined throughout as the claim that per-subject, low-latency feedback loops between measured attention and adaptive stimulus delivery increase the rate of cognitive reorganisation in exposed populations. The combined thesis is that within connected, high-exposure populations, cognition is not merely influenced by these systems but structurally reorganised through a compounding feedback loop between external generative architecture and internal cognitive architecture. This thesis is derived from system architecture and is an inference from that architecture, not an empirical finding. The framework is a model rather than a prediction, a worldview, or a programme. It is descriptive about location, narrow about depth, and explicit about the conditions under which it would be abandoned. Its distinguishing claim against the lineage of media alarm is mechanical rather than rhetorical: no prior medium closed a per-subject loop between measured attention and delivered stimulus at the timescale of inference. The paper states the mechanism, the phenomenology, the limits of self-observation, and the falsification conditions.</p>
+<p><b>Keywords:</b> cognitive environment, attention measurement, attention conditioning, accelerationism, media ecology, epistemic limits</p>
+<hr>
+<h2>1. Introduction</h2>
+<h3>1.1 Problem statement</h3>
+<p>The dominant frames for analysing artificial intelligence treat it as an object of governance. AI ethics asks what systems should be permitted to do. The sociology of technology asks how systems distribute power, labour and risk. Both frames presuppose a subject who stands outside the system, deliberates about it, and acts upon it. That presupposition is the problem this paper addresses.</p>
+<p>The claim advanced here is that within one bounded population the presupposition no longer describes the situation. Where a person's perceptual intake, informational environment, drafting, recall and much of their discursive practice are routed through optimising systems for the majority of waking hours, the system is not an object in that person's environment. It is the environment, and the cognition that would evaluate it has itself been shaped inside it. This is an inference from architecture, not an observed psychological measurement. It does not make evaluation impossible. It makes evaluation a different kind of problem, one that requires the analyst to specify what the analysing instrument has been exposed to.</p>
+<h3>1.2 Scope</h3>
+<p>The framework applies to connected literate populations: individuals with continuous access to networked devices, high daily exposure to algorithmically ordered content, and routine use of generative systems for reading, writing or decision support. It does not claim uniform application across that population, and it makes no claim about populations outside it. Exposure is treated as a graded variable, not a binary condition. Every claim below is bounded by this scope, and no claim about cognition in general is entered anywhere in the paper.</p>
+<h3>1.3 Methodological stance</h3>
+<p>The approach is diagnostic systems theory. It builds a model of a system's operation from its architecture and its incentives, derives expected effects, and marks the boundary between what the architecture licenses and what would require measurement to establish. It is not an empirical study and does not present data. Its claims are of three kinds, and each is labelled where it appears: documented record, inference from mechanism, and interpretation. Conflating these is the standard failure of the literature this paper is positioned against, in both its enthusiastic and its alarmed registers.</p>
+<h3>1.4 Thesis statement</h3>
+<p>The thesis is stated once, in bounded form, and is not widened elsewhere. Within connected, high-exposure populations, continuous algorithmic exposure operates through a closed per-subject loop between measured attention and delivered stimulus; that loop is an architectural fact of the deployed systems; and the inference drawn from it is that the loop raises the rate of structural reorganisation in attention, expectation and formulation among the exposed. Cortical accelerationism names the mechanism layer of this thesis only. It is not offered as a philosophical worldview, a general theory of cognition, or an interpretive umbrella.</p>
+<h3>1.5 Terminological note</h3>
+<p>Psychoanthrofuturism names the condition. Cortical accelerationism names the mechanism operating within that condition. The two are distinct, are used distinctly throughout, and neither is used to explain material outside the stated scope.</p>
+<h2>2. Theoretical positioning</h2>
+<p>The framework is located by reference to five bodies of work. It is not a synthesis of them, and no summary of them is attempted here. The positioning below is structural and is not an assessment of the works cited.</p>
+<h3>2.1 Accelerationism</h3>
+<p>The lineage from the Cybernetic Culture Research Unit through Land's post-CCRU writing, and the counter-position developed by Srnicek and Williams, shares an assumption that the present framework does not adopt: that acceleration occurs in the world and that the human subject stands in some relation to it, whether as director, obstacle or residue. Left accelerationism presupposes a deliberative agency capable of steering the process. Right accelerationism locates the operative agent in capital or in the technological process itself and treats the human substrate as transitional. Unconditional accelerationism declines the question of direction entirely. Cortical accelerationism is not a fourth position of this type, and it is not offered as a rival worldview. It is a mechanism-layer claim, and its only point of contact with these positions is locational: it holds that the loop it specifies operates on the individual subject rather than at the level of market or machine. Whether that relocation bears on what the earlier positions were arguing about is an interpretive question and is not settled here.</p>
+<h3>2.2 Media theory</h3>
+<p>McLuhan's extension model treats media as prosthetic amplifications of human faculty, with the amputation of the extended faculty as the accompanying cost. The present framework retains the structure of the observation and does not adopt its directionality. An extension is directed outward from a stable organism. What is described here is directed inward: the system does not extend a faculty into the world, it configures the faculty from inside the loop. This is a system description, not an observed psychological measurement. The distinction is testable in principle, since an extension leaves the extended capacity intact when the prosthesis is removed and a configuration does not.</p>
+<h3>2.3 Post-structural systems thought</h3>
+<p>Deleuze and Guattari's account of desire as produced rather than lacking, and Deleuze's later note on societies of control, supply the vocabulary for a subject constituted through modulation rather than enclosure. The framework borrows the modulation structure and does not adopt the ontological commitments. It requires no metaphysics of flows to make its claim, and it should not be read as advancing one.</p>
+<h3>2.4 Attention economy literature</h3>
+<p>The documentation of extractive design, from Wu's history through the testimony and internal records disclosed since 2018, establishes the incentive structure as record rather than inference. That literature describes what is being done to attention as a market. The present framework asks what is being done to cognition as an architecture, which is a different question and does not follow from the first without additional argument.</p>
+<h3>2.5 Cognitive offloading</h3>
+<p>The research programme on transactive memory and external storage, including the finding that expected availability of information alters what is encoded, provides the closest empirical adjacency. It establishes that cognitive labour migrates to available external structure. The present framework proposes that the migration is no longer restricted to storage and retrieval, and extends to generation, sequencing and evaluation. That extension is inference from mechanism, not an empirical finding, and is marked as such.</p>
+<h3>2.6 Position summary</h3>
+<p>The position of the framework relative to this literature can be stated in one sentence. The attention economy literature has the incentives, media theory has the structure, cognitive offloading has the empirical foothold, and accelerationism has the temporal argument, and none of them specifies a per-subject loop between attention measurement and adaptive delivery as a mechanism operating at the level of the individual subject.</p>
+<h2>3. Core model</h2>
+<p>Three figures specify the model. Each is described in text, each carries a caption, and each is accompanied by a statement of what it does not claim. The figures are analytical representations derived from system architecture. None of them is a measurement.</p>
+<h3>3.1 The loop</h3>
+<p>The loop is a closed cycle of five stations: attention, attention measurement, model optimisation, reinforced output, and cognitive update. Its closure at the level of the individual subject is an architectural fact of the deployed systems. Its cognitive station is an inferred effect. Figure 1 sets out the cycle.</p>
+<figure><div style="background:#fafafa;border:1px solid #e6e6e6;padding:34px 20px">
+<svg viewBox="0 0 900 470" style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0d0d0d"/></marker></defs>
+<g style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;fill:#0d0d0d">
+  <rect x="330" y="18" width="240" height="52" fill="none" stroke="#0d0d0d" stroke-width="1.4"/>
+  <text x="450" y="49" text-anchor="middle">HUMAN ATTENTION</text>
+
+  <rect x="640" y="120" width="238" height="52" fill="none" stroke="#0d0d0d" stroke-width="1"/>
+  <text x="759" y="144" text-anchor="middle">ATTENTION MEASUREMENT</text>
+  <text x="759" y="161" text-anchor="middle" style="font-size:9px;letter-spacing:.1em;fill:#6f6f74">DWELL · SCROLL · SELECTION</text>
+
+  <rect x="640" y="248" width="238" height="52" fill="none" stroke="#0d0d0d" stroke-width="1"/>
+  <text x="759" y="272" text-anchor="middle">MODEL OPTIMISATION</text>
+  <text x="759" y="289" text-anchor="middle" style="font-size:9px;letter-spacing:.1em;fill:#6f6f74">ENGAGEMENT OBJECTIVE</text>
+
+  <rect x="330" y="378" width="240" height="52" fill="none" stroke="#0d0d0d" stroke-width="1"/>
+  <text x="450" y="402" text-anchor="middle">REINFORCED OUTPUT</text>
+  <text x="450" y="419" text-anchor="middle" style="font-size:9px;letter-spacing:.1em;fill:#6f6f74">ORDERED AND TIMED</text>
+
+  <rect x="22" y="248" width="238" height="52" fill="none" stroke="#0d0d0d" stroke-width="1" stroke-dasharray="5 4"/>
+  <text x="141" y="272" text-anchor="middle">COGNITIVE UPDATE</text>
+  <text x="141" y="289" text-anchor="middle" style="font-size:9px;letter-spacing:.1em;fill:#6f6f74">EXPECTATION · SALIENCE</text>
+
+  <rect x="22" y="120" width="238" height="52" fill="none" stroke="none"/>
+</g>
+<g fill="none" stroke="#0d0d0d" stroke-width="1.2" marker-end="url(#a1)">
+  <path d="M570 46 L640 46 L759 46 L759 114"/>
+  <path d="M759 172 L759 242"/>
+  <path d="M759 300 L759 404 L576 404"/>
+  <path d="M330 404 L141 404 L141 306"/>
+  <path d="M141 248 L141 46 L324 46"/>
+</g>
+<g style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.16em;fill:#6f6f74">
+  <text x="884" y="212" text-anchor="end">RETAINED AS RECORD</text>
+  <text x="16" y="212">NO RECORD RETAINED</text>
+  <text x="450" y="352" text-anchor="middle">DELIVERY</text>
+</g>
+<g stroke="#c8c8cc" stroke-width="1" stroke-dasharray="2 5">
+  <line x1="300" y1="0" x2="300" y2="470"/><line x1="600" y1="0" x2="600" y2="470"/>
+</g>
+<g style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.2em;fill:#c8c8cc">
+  <text x="150" y="462" text-anchor="middle">SUBJECT</text>
+  <text x="750" y="462" text-anchor="middle">SYSTEM</text>
+</g>
+</svg></div>
+<figcaption>Figure 1. The five-station per-subject loop. Solid outline marks a station established by published system design. The broken outline marks the station that is an inferred cognitive effect and has not been measured in the deployed setting.</figcaption></figure>
+<p>Each element of the loop model is tagged below by claim status.</p>
+<p><b>Loop closure [architectural fact].</b> Attention is measured, the measurement is fed to an optimisation process, and delivered output is adjusted per subject on the basis of that measurement. This is established by the published design of the systems and does not depend on any claim about effects.</p>
+<p><b>Two sites of learning [architectural fact at one station, inferred cognitive effect at the other].</b> Learning occurs at two stations and they are not symmetrical. At the optimisation station, learning is explicit, objective-directed, retained across sessions and pooled across subjects; this is architectural fact. At the cognitive update station, learning is implicit, undirected, retained without record and confined to the individual; this is an inferred cognitive effect and has not been measured in the deployed setting. The system's objective is specified. What is being optimised in the subject is not specified to the subject; this is a system description, not an observed psychological measurement.</p>
+<p><b>Asymmetry [architectural fact].</b> Three asymmetries follow from the architecture rather than from any assumption about the subject. <i>Temporal asymmetry.</i> The optimisation station closes its loop within a single inference cycle. Human attentional regulation evolved against selection pressures operating across generations. The two run at scales separated by many orders of magnitude. <i>Informational asymmetry.</i> The system observes the subject continuously and at high resolution. The subject observes the system through its outputs alone and cannot inspect the objective function that produced them. <i>Retentional asymmetry.</i> The system's updates persist and compound as record. The subject's updates persist without being recorded, which means they are available to introspection only through their effects. That the subject's updates occur at all is an inferred cognitive effect; that no record of them is retained by the subject is architectural.</p>
+<p><b>Compounding [theoretical extrapolation].</b> That successive cycles raise the rate of structural reorganisation rather than adding to it linearly is an extrapolation from the architecture and is not established by measurement.</p>
+<p><b>What Figure 1 does not claim.</b> It does not claim that the loop is irreversible, that it operates uniformly across individuals, or that its cognitive station has been imaged. It claims that the architecture is closed, per-subject, and asymmetrical, which is established by the design of the systems rather than by measurement of their effects. This model describes a bounded mechanism within connected, high-exposure populations.</p>
+<h3>3.2 The three-layer architecture</h3>
+<p>The condition is described across three layers. Each layer conditions the one below it, and the lowest layer feeds back into the highest. Figure 2 sets out the architecture.</p>
+<figure><div style="background:#fafafa;border:1px solid #e6e6e6;padding:34px 24px">
+<svg viewBox="0 0 900 400" style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0d0d0d"/></marker></defs>
+<g style="font-family:'IBM Plex Mono',monospace;letter-spacing:.16em">
+  <rect x="150" y="16" width="600" height="92" fill="none" stroke="#0d0d0d" stroke-width="1.4"/>
+  <text x="172" y="46" style="font-size:11.5px;fill:#0d0d0d">LAYER 1 · ONTOLOGICAL</text>
+  <text x="172" y="70" style="font-size:10px;letter-spacing:.06em;fill:#6f6f74">what is taken to be real, available, and worth attending to</text>
+  <text x="172" y="90" style="font-size:9px;letter-spacing:.06em;fill:#6f6f74">assumption: the accessible is the actual</text>
+
+  <rect x="150" y="154" width="600" height="92" fill="none" stroke="#0d0d0d" stroke-width="1.4"/>
+  <text x="172" y="184" style="font-size:11.5px;fill:#0d0d0d">LAYER 2 · MEDIATIONAL</text>
+  <text x="172" y="208" style="font-size:10px;letter-spacing:.06em;fill:#6f6f74">interfaces, ranking systems, generative language production</text>
+  <text x="172" y="228" style="font-size:9px;letter-spacing:.06em;fill:#6f6f74">the passage through which layer 1 is populated</text>
+
+  <rect x="150" y="292" width="600" height="92" fill="none" stroke="#0d0d0d" stroke-width="1.4"/>
+  <text x="172" y="322" style="font-size:11.5px;fill:#0d0d0d">LAYER 3 · COGNITIVE</text>
+  <text x="172" y="346" style="font-size:10px;letter-spacing:.06em;fill:#6f6f74">attention, expectation, inner speech, judgment</text>
+</g>
+<g fill="none" stroke="#0d0d0d" stroke-width="1.2" marker-end="url(#a2)">
+  <path d="M450 108 L450 150"/>
+  <path d="M450 246 L450 288"/>
+</g>
+<g fill="none" stroke="#0d0d0d" stroke-width="1.2" stroke-dasharray="5 4" marker-end="url(#a2)">
+  <path d="M750 338 L830 338 L830 62 L756 62"/>
+</g>
+<g style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;letter-spacing:.16em;fill:#6f6f74">
+  <text x="838" y="204" transform="rotate(90 838 204)" text-anchor="middle">REVISES LAYER 1 · INTERPRETIVE</text>
+  <text x="140" y="136" text-anchor="end">CONDITIONS</text>
+  <text x="140" y="274" text-anchor="end">POPULATES</text>
+</g>
+</svg></div>
+<figcaption>Figure 2. Three-layer architecture of psychoanthrofuturism: ontological, mediational, cognitive. The broken return path is the weakest link in the figure and is marked as an interpretive claim rather than an architectural one.</figcaption></figure>
+<p><b>Interactions [interpretive claim, except where marked].</b> Layer 1 supplies the frame within which layer 2 is not experienced as mediation. When a ranked feed is taken as the state of the world rather than as a selection from it, the mediational layer becomes transparent, and transparency is the condition of its effectiveness. That layer 2 performs selection is architectural fact. That layer 2 then populates layer 3 through repetition, such that what is delivered frequently becomes what is expected and what is expected becomes what is attended to, is an inferred cognitive effect. That layer 3 closes the circuit by revising layer 1 is an interpretive claim and is the weakest link in the figure.</p>
+<p>The layers are separable analytically and not experientially. This is the specific difficulty of the condition and the reason the framework requires the epistemic section below.</p>
+<p><b>What Figure 2 does not claim.</b> It does not claim that the three layers are neurologically distinct, that the arrows describe causal magnitudes, or that any layer operates without exception. It is an analytical decomposition, offered because the alternative is a single undifferentiated claim about influence.</p>
+<h3>3.3 The acceleration gradient</h3>
+<p>Figure 3 sets out the expected form of the relationship between exposure over time and structural reorganisation.</p>
+<figure><div style="background:#fafafa;border:1px solid #e6e6e6;padding:34px 24px">
+<svg viewBox="0 0 900 420" style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg">
+<g stroke="#0d0d0d" stroke-width="1.2" fill="none">
+  <path d="M60 26 L60 356 L868 356"/>
+</g>
+<polyline points="60.0,356.0 67.9,355.2 75.8,354.5 83.7,353.7 91.6,352.9 99.5,352.1 107.4,351.2 115.3,350.3 123.2,349.5 131.1,348.6 139.0,347.6 146.9,346.7 154.8,345.7 162.7,344.7 170.6,343.7 178.5,342.6 186.4,341.6 194.3,340.5 202.2,339.3 210.1,338.2 218.0,337.0 225.9,335.8 233.8,334.6 241.7,333.3 249.6,332.0 257.5,330.7 265.4,329.4 273.3,328.0 281.2,326.6 289.1,325.1 297.0,323.6 304.9,322.1 312.8,320.5 320.7,318.9 328.6,317.3 336.5,315.6 344.4,313.9 352.3,312.2 360.2,310.4 368.1,308.5 376.0,306.7 383.9,304.7 391.8,302.8 399.7,300.7 407.6,298.7 415.5,296.6 423.4,294.4 431.3,292.2 439.2,289.9 447.1,287.6 455.0,285.2 462.9,282.8 470.8,280.3 478.7,277.7 486.6,275.1 494.5,272.4 502.4,269.7 510.3,266.9 518.2,264.0 526.1,261.1 534.0,258.1 541.9,255.0 549.8,251.9 557.7,248.6 565.6,245.3 573.5,241.9 581.4,238.5 589.3,234.9 597.2,231.3 605.1,227.6 613.0,223.8 620.9,219.9 628.8,215.9 636.7,211.8 644.6,207.6 652.5,203.3 660.4,199.0 668.3,194.5 676.2,189.9 684.1,185.2 692.0,180.4 699.9,175.4 707.8,170.4 715.7,165.2 723.6,159.9 731.5,154.5 739.4,149.0 747.3,143.3 755.2,137.5 763.1,131.5 771.0,125.5 778.9,119.2 786.8,112.8 794.7,106.3 802.6,99.6 810.5,92.8 818.4,85.8 826.3,78.6 834.2,71.2 842.1,63.7 850.0,56.0" fill="none" stroke="#0d0d0d" stroke-width="2"/>
+<line x1="60" y1="356" x2="850" y2="56" stroke="#c8c8cc" stroke-width="1" stroke-dasharray="4 5"/>
+<g stroke="#c8c8cc" stroke-width="1" stroke-dasharray="2 5">
+  <line x1="323" y1="26" x2="323" y2="356"/><line x1="586" y1="26" x2="586" y2="356"/>
+</g>
+<g style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.18em;fill:#6f6f74">
+  <text x="191" y="380" text-anchor="middle">EARLY EXPOSURE</text>
+  <text x="454" y="380" text-anchor="middle">LOOP CLOSURE</text>
+  <text x="727" y="380" text-anchor="middle">COMPOUNDING</text>
+  <text x="868" y="404" text-anchor="end" style="letter-spacing:.2em;fill:#c8c8cc">TIME &#8594;</text>
+  <text x="700" y="150" style="fill:#c8c8cc;font-size:9px">LINEAR REFERENCE</text>
+</g>
+<g style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.18em;fill:#6f6f74">
+  <text x="34" y="200" transform="rotate(-90 34 200)" text-anchor="middle">STRUCTURAL REORGANISATION</text>
+  <text x="70" y="20" style="fill:#c8c8cc;font-size:9px">NO UNITS ASSIGNED</text>
+</g>
+</svg></div>
+<figcaption>Figure 3. Expected form of the acceleration gradient. Qualitative. No units are assigned to the vertical axis and none can be assigned at present. The broken line is a linear reference, not a measurement.</figcaption></figure>
+<p>The curve is not linear because the loop is closed. Each cycle updates both stations, and each update improves the fit between delivered stimulus and measured response, which increases the probability of the next cycle. The gradient steepens where three conditions coincide: continuous exposure, per-subject optimisation, and low-latency feedback. Where any one is absent, the curve flattens toward the linear. The form of this curve is a theoretical extrapolation from the architecture and is not an inferred effect established by measurement.</p>
+<p><b>What Figure 3 does not claim.</b> No units are assigned to the vertical axis, and none can be assigned at present. The curve represents the expected form of the relationship given the architecture, not a measured trajectory. Any presentation of such a curve with numbers attached would be a presentation of a curve that has not been measured. The claim is qualitative: compounding rather than additive.</p>
+<h2>4. Mechanism: cortical accelerationism</h2>
+<p>Cortical accelerationism is used in this paper in one sense only, given here and not varied elsewhere: the claim that per-subject, low-latency feedback loops between measured attention and adaptive stimulus delivery increase the rate of cognitive reorganisation in exposed populations. It is a mechanism layer within the framework. It is not a worldview, not a general explanatory framework, and not an interpretive umbrella for cognition at large. Each component below is labelled as record, inference, or analogy, and the labels are not decorative.</p>
+<h3>4.1 Components</h3>
+<p><b>Reinforcement structure [analogy, with a stated limit].</b> The relation between delivered stimulus and measured response has the form of a reinforcement schedule. The system emits, the subject responds, the response is measured, and subsequent emission is adjusted to increase the measured response. This is an analogy to operant conditioning and not an identity claim. The limit is that the reinforcing agent here is itself adaptive and optimises the schedule against the individual subject, which no experimental apparatus in the conditioning literature did. The analogy is therefore weaker than the phenomenon in one direction and should not be treated as containing it.</p>
+<p><b>Variable-ratio attention conditioning [inference from documented design].</b> Uncertain reward delivered on an unpredictable schedule sustains responding at higher rates and with greater resistance to extinction than predictable reward. That the interfaces in question implement unpredictable reward is documented in their design and in the disclosed record of their development; that element is record. That this produces attentional conditioning at the individual level is inference from that record combined with the conditioning literature, not an empirical finding, and it is at this joint that the strongest counter-argument enters, addressed below.</p>
+<p><b>Model-like syntax drift [inference, weakly supported].</b> Extended exposure to a generative system's output distribution is proposed to shift the exposed subject's own production toward that distribution: sentence length regularisation, characteristic transitional constructions, a preference for enumerative structure, and a flattening of idiosyncratic rhythm. The proposal is testable by ordinary corpus methods and has not yet been tested at the scale that would establish it. It is stated here as a claim awaiting measurement, and the framework does not depend on it.</p>
+<p><b>Behavioural feedback closure [record].</b> That these systems close a per-subject loop between attention measurement and delivery is a matter of published architecture rather than interpretation. It is the least contestable element of the model and the one on which the position rests.</p>
+<h3>4.2 Mechanism against metaphor</h3>
+<p>The framework describes the loop as producing structural reorganisation. Structural here means a persisting change in the disposition of attention and expectation that outlasts the exposure episode. It does not mean anatomical alteration, and no claim about tissue is entered. The statement that the acceleration is cortical is a claim about location within the system, asserting that the loop operates on the subject rather than merely in their vicinity. Read anatomically it would be a claim the framework does not license, and read as a general account of mind it would exceed the mechanism layer to which the term is restricted.</p>
+<h3>4.3 Counter-readings</h3>
+<p><b>The counter-reading, stated at full strength.</b> Every consequential medium has produced a literature of ruined minds, from Thamus against writing to Postman against television, and each now reads as panic. A sceptic is entitled to ask why this instalment reads differently in forty years. The framework's answer is partial and its partiality should be visible: what separates this case is the mechanism rather than the alarm. Print did not observe its reader. Television did not adjust to the individual viewer's lapses. No prior medium closed a per-subject loop between measured attention and delivered stimulus at sub-second latency. That closure is a difference in kind rather than degree.</p>
+<p><b>The second counter-reading.</b> A second reading holds that no capture occurred at all, that the systems merely satisfied existing preference with unprecedented fidelity, and that the observed drift is drift in taste. This reading cannot be retired without longitudinal evidence separating revealed preference from induced preference, and the framework does not claim to have retired it.</p>
+<h3>4.4 Falsification conditions</h3>
+<p>The conditions below are stated in uniform form and in measurable terms. They are not qualified elsewhere in the paper, and where any later section bears on them it is governed by the strictest statement given here.</p>
+<ol><li>The model is falsified if the loop can be shown not to close at the individual level in deployed systems.</li><li>The model is falsified if the attentional and semantic profiles of the heaviest users prove indistinguishable from those of matched low-exposure controls after adjustment for selection.</li><li>The model is falsified if a documented intervention restores pre-exposure attentional profiles in heavy users and the restoration holds.</li></ol>
+<p>No interpretive language attaches to these conditions, and no section of this paper weakens them.</p>
+<h2>5. Phenomenology</h2>
+<p>Section 4 describes the architecture and the mechanism. This section describes what occupying it is reported to be like. Every item in this section is self-report and is therefore inference of the weakest class available to the framework, since self-report is the instrument section 6 calls into question. None of it is offered as measurement.</p>
+<p><b>Cognitive drift.</b> The reported experience is not of coercion but of ease. Sequences of thought begin and are interrupted before completion, without the interruption being noticed as interruption, because the succeeding content arrives with sufficient salience to occupy the vacated position. What is reported afterwards is not the memory of being distracted but the absence of the thought that would have been finished.</p>
+<p><b>Flattening.</b> Subjects report a reduction in the felt difference between kinds of content. Material of very different weight arrives through the same channel, at the same cadence, ordered by the same function, and the discrimination that would ordinarily be supplied by context is not supplied. The report is of uniform availability rather than of loss.</p>
+<p><b>Reduced exercise of interior speech.</b> The most consequential report, and the least verifiable, concerns the internal monologue. Where formulation is habitually externalised, that is, where the first move on encountering a difficulty is to submit it rather than to think it, the interior process that formulation used to require is exercised less. Subjects report reaching for the interface at the point where they previously would have paused. Whether the underlying capacity changes or merely goes unused is not settled by the report.</p>
+<p><b>Identity stabilisation through imitation patterns.</b> Where the interior process is exercised less, self-description takes on the vocabulary and cadence available in the environment. The subject continues to be a subject and continues to report a stable identity. What is reported to change is the source of the material from which that stability is assembled. This is an interpretive claim about reported material and is not a claim about subject formation in general.</p>
+<p><b>Register.</b> None of the above is offered as catastrophe. The condition described is compatible with high function, high output and reported satisfaction. Any account that requires the subject to be suffering in order for the claim to hold has misidentified the phenomenon.</p>
+<h2>6. Limits of observability</h2>
+<p>The framework asserts a structural constraint on its own verification, and the assertion carries a risk that is handled here rather than left implicit.</p>
+<p><b>The constraint.</b> If the instrument of self-examination is itself shaped by the process under examination, self-report is compromised as evidence about that process. A subject whose attentional profile has been altered will report from within the altered profile. This is not a claim that subjects are deceived. It is a claim about the reference frame available to them, and it is an inference from the mechanism rather than an empirical finding.</p>
+<p><b>Consequences.</b> Three follow. First, absence of felt change is not evidence of absence of change, since the felt sense is generated by the same apparatus. Second, the population best positioned to notice, by virtue of heavy exposure, is the population least positioned to report reliably. Third, external measurement is required: longitudinal attentional profiling, corpus analysis of production across exposure gradients, and matched-control comparison.</p>
+<p><b>The risk, stated plainly.</b> An argument that discounts contrary self-report can be made unfalsifiable, and an unfalsifiable argument is of no value whatever its rhetorical force. The framework therefore restricts the constraint in two ways. The constraint applies to introspective reports about the reorganisation itself and not to all self-report. And the framework stakes its central claims where external measurement can reach them, which is why the falsification conditions in section 4.4 are stated in terms of measurable profiles rather than in terms of what subjects say about themselves. Those conditions stand as written and are not qualified by anything in this section.</p>
+<p><b>No closure is claimed.</b> The subject is not held to be sealed. The claim is narrower: that the subject cannot fully verify their own reorganisation from inside it, and that this is a structural feature of the loop rather than a defect of any individual.</p>
+<h2>7. Implications</h2>
+<p>The implications below follow from the model if the model holds. Each is conditional, and none is offered as an established finding.</p>
+<p><b>Education.</b> If cognitive labour migrates to available external structure, then instruction organised around the production of outputs will measure the structure rather than the student. The design question is not whether to permit these systems but which capacities are to be exercised deliberately in their presence, and the answer requires naming the capacities before the tools are configured.</p>
+<p><b>Writing and language production.</b> If model-like syntax drift occurs at the scale proposed, the observable signature will appear first in aggregate corpora rather than in any individual text, as a narrowing of variance in the distribution of published prose. The prediction is testable and should be tested, because it is one of the few points where the framework can be checked cheaply against existing data.</p>
+<p><b>Institutional cognition.</b> Organisations that route judgment through generative systems acquire the same asymmetry as individuals: the system's learning is retained as record and the institution's is not. The mitigation is architectural rather than attitudinal. Where a decision is delegated, the record of what was delegated, what was checked, and by whom, is the only thing that preserves institutional capacity across the delegation.</p>
+<p><b>Authorship.</b> Authorship has functioned as an attribution of responsibility rather than a claim about the origin of every sentence. Where production is distributed across human and generative contribution, the useful question is not who wrote it but who answers for it. That question has an answer in every case and it should be recorded.</p>
+<p><b>Hybrid practice.</b> The framework does not treat the hybrid condition as avoidable within the population in scope, and the recommendation it carries is minimal: proceed deliberately, with the asymmetries of the loop named, rather than by drift. That is a condition of practice rather than a politics.</p>
+<h2>8. Conclusion</h2>
+<p>The framework advanced here is a model, not a worldview and not an ideology, and it should be evaluated as a model: by whether it identifies the operative mechanism, by whether it predicts what would be found on measurement, and by whether it states the conditions under which it would be abandoned. Those conditions are given in section 4.4 and are not restated in weaker form here.</p>
+<p>Its content can be compressed without distortion. Within connected, high-exposure populations, artificial intelligence in the deployed form operates as a cognitive environment rather than as an instrument, because the loop between attention measurement and delivered stimulus closes on the individual subject at a timescale no prior medium approached. That closure is architectural fact. That it raises the rate of structural reorganisation is inference from architecture. The location of the process in the individual subject rather than in market or machine is what cortical accelerationism asserts, and it asserts nothing beyond that mechanism. The reorganisation is structural in the sense that it persists beyond the exposure episode, and it is not structural in the anatomical sense, which is a claim the framework declines to enter.</p>
+<p>No utopia is proposed and no catastrophe is forecast. The reorganisation described is compatible with a population that functions well, reports satisfaction, and produces more than it did before. That compatibility is a reason the reorganisation is difficult to observe rather than a reason to doubt it. What the model asserts, within its stated scope and no wider, is that a change in the conditions of cognition has occurred in connected, high-exposure populations, that it is proceeding, and that it is measurable in principle by instruments that have not yet been pointed at it.</p>
+<hr>
+<h2>Appendix: key definitions</h2>
+<p>Definitions are given once. Where a term appears in the body of the paper it carries the sense recorded here and no other.</p>
+<p><b>Psychoanthrofuturism.</b> The condition, within connected literate populations, in which artificial intelligence functions as the environment of cognition rather than as an instrument available to it.</p>
+<p><b>Cortical accelerationism.</b> The claim that per-subject, low-latency feedback loops between measured attention and adaptive stimulus delivery increase the rate of cognitive reorganisation in exposed populations. A mechanism layer, not a worldview or a general explanatory framework.</p>
+<p><b>Loop.</b> The closed five-station cycle of attention, attention measurement, model optimisation, reinforced output and cognitive update, distinguished from earlier media relations by its closure at the individual level and by its latency.</p>
+<p><b>Asymmetry.</b> The three structural imbalances of the loop: temporal, in the rate of adjustment; informational, in what each party observes of the other; and retentional, in what persists as record.</p>
+<p><b>Cognitive update.</b> The station of the loop at which the exposed subject's expectation, salience and cadence are altered by delivered output. An inferred effect, not a measured one.</p>
+<p><b>Attention measurement.</b> The station of the loop at which dwell, scroll, selection and abandonment are recorded and passed to optimisation. Architectural fact.</p>
+<p><b>Reinforced output.</b> Delivered stimulus, ordered and timed by the optimisation station against an engagement objective.</p>
+<p><b>Structural reorganisation.</b> A persisting change in the disposition of attention, expectation and formulation that outlasts the exposure episode. Not an anatomical claim.</p>
+<p><b>Model-like syntax drift.</b> The proposed convergence of an exposed subject's language production toward the output distribution of generative systems. A testable claim awaiting measurement.</p>
+<p><b>Limits of observability.</b> The structural constraint whereby a subject cannot fully verify their own reorganisation from within it, restricted to introspective reports about the reorganisation and not extended to self-report in general.</p>
+<p><b>Connected literate populations.</b> Individuals with continuous networked access, high daily exposure to algorithmically ordered content, and routine use of generative systems in reading, writing or decision support. Exposure is graded, not binary.</p>
+</div></article>
+
+<div class="foot"><div class="wrap">
+  DAELIX AI &middot; AI OPERATIONS &middot; UNITED KINGDOM &middot; MMXXVI<br>
+  <a href="/#proving">RETURN TO THE PROVING</a> &nbsp;&middot;&nbsp; <a href="/">DAELIXAI.COM</a> &nbsp;&middot;&nbsp; <a href="/governance.html">GOVERNANCE</a>
+</div></div>
+
+</body>
+</html>
