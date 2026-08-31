@@ -44,6 +44,12 @@ input,textarea,button{font:inherit}
 [data-b]{display:contents}
 [data-b="sent"],[data-b="showErr"]{display:none}
 @media(max-width:1060px){[data-b="wide"]{display:none}}
+@media(max-width:860px){
+#heroveil{background:linear-gradient(to top,rgba(255,255,255,0) 0,rgba(255,255,255,.18) 90px,rgba(255,255,255,.6) 190px,rgba(255,255,255,.93) 280px,#fff 350px)!important}
+#aperture{opacity:.72!important}
+.heroctas{margin-top:34px!important}
+.herostrap{margin-top:30px!important;font-size:9.6px!important;letter-spacing:.16em!important;line-height:1.9}
+}
 @media(max-width:760px){[data-b="architectureWide"]{display:none}}
 @media(min-width:761px){[data-b="architectureNarrow"]{display:none}}
 </style>
@@ -82,7 +88,7 @@ input,textarea,button{font:inherit}
 
 <header id="top" data-screen-label="HERO" style="position:relative;min-height:92vh;display:flex;align-items:center;padding:150px clamp(20px,3.2vw,44px) 96px;overflow:hidden;box-sizing:border-box">
   <canvas id="aperture" style="position:absolute;inset:0;width:100%;height:100%;opacity:1"></canvas>
-  <div style="position:absolute;inset:0;background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.95) 24%,rgba(255,255,255,.55) 40%,rgba(255,255,255,.05) 56%,rgba(255,255,255,0) 66%);pointer-events:none"></div>
+  <div id="heroveil" style="position:absolute;inset:0;background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.95) 24%,rgba(255,255,255,.55) 40%,rgba(255,255,255,.05) 56%,rgba(255,255,255,0) 66%);pointer-events:none"></div>
   <div style="position:relative;max-width:1180px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:clamp(52px,6.5vw,100px)">
     <div style="flex:0 1 min(100%,600px)">
       <div style="font-family:IBM Plex Mono, monospace;font-size:10px;letter-spacing:.32em;color:#9a9a9a;margin-bottom:28px">DAELIX AI · AI OPERATIONS · UNITED KINGDOM · MMXXVI</div>
@@ -93,11 +99,11 @@ input,textarea,button{font:inherit}
       <p style="max-width:30ch;margin:30px 0 0;font-size:clamp(20px,2.1vw,26px);line-height:1.28;letter-spacing:-.008em;color:#000;font-weight:500;opacity:0;animation:fadein 1.1s .48s forwards;text-wrap:pretty">We already know what these systems can do. You do not have to.</p>
       <p style="max-width:58ch;margin:26px 0 0;font-size:17.5px;line-height:1.62;color:#1c1c1c;font-weight:350;opacity:0;animation:fadein 1.1s .62s forwards;text-wrap:pretty">We find where your business is burning human attention on work that should run itself: the unanswered enquiry, the unchased quote, the unkept record. We examine how your operation actually works, decide what should change, and only then build it.</p>
       <p style="max-width:58ch;margin:18px 0 0;font-size:19px;line-height:1.5;color:#000;font-weight:500;opacity:0;animation:fadein 1.1s .7s forwards">We are already inside the acceleration. DAELIX is the vessel that carries you into it. You enter, or you wait.</p>
-      <div style="display:flex;gap:12px;margin-top:40px;flex-wrap:wrap;opacity:0;animation:fadein 1s .8s forwards">
+      <div class="heroctas" style="display:flex;gap:12px;margin-top:40px;flex-wrap:wrap;opacity:0;animation:fadein 1s .8s forwards">
         <a href="#contact" style="font-family:IBM Plex Mono, monospace;font-size:10.5px;letter-spacing:.22em;padding:15px 24px;border:1px solid #000;background:#000;color:#fff;transition:all .2s" style-hover="background:#fff;color:#000">REQUEST THE AUDIT</a>
-        <a href="#doctrine" style="font-family:IBM Plex Mono, monospace;font-size:10.5px;letter-spacing:.22em;padding:15px 24px;border:1px solid #d2d2d2;color:#141414;transition:all .2s" style-hover="border-color:#000">THE DOCTRINE</a>
+        <a href="#doctrine" style="font-family:IBM Plex Mono, monospace;font-size:10.5px;letter-spacing:.22em;padding:15px 24px;border:1px solid #d2d2d2;background:#fff;color:#141414;transition:all .2s" style-hover="border-color:#000">THE DOCTRINE</a>
       </div>
-      <div style="margin-top:38px;font-family:IBM Plex Mono, monospace;font-size:10.5px;letter-spacing:.22em;color:#4a4a4a;opacity:0;animation:fadein 1s 1.05s forwards">AUDITS · INSTALLATIONS · GOVERNED AUTOMATION</div>
+      <div class="herostrap" style="margin-top:38px;font-family:IBM Plex Mono, monospace;font-size:10.5px;letter-spacing:.22em;color:#4a4a4a;opacity:0;animation:fadein 1s 1.05s forwards">AUDITS · INSTALLATIONS · GOVERNED AUTOMATION</div>
     </div>
     <div style="flex:0 0 auto;display:flex;justify-content:flex-start;opacity:0;animation:fadein 1.4s 1.2s forwards">
       <svg viewBox="14 14 68 68" xmlns="http://www.w3.org/2000/svg" style="height:clamp(84px,6.6vw,102px);width:auto;display:block">
@@ -335,7 +341,7 @@ input,textarea,button{font:inherit}
       <p style="flex:1 1 min(100%,600px);margin:0;font-size:16.5px;line-height:1.68;color:#242424;font-weight:350;max-width:66ch;text-wrap:pretty">You may be a fit if your operation contains any of the following.</p>
     </div>
 
-    <div data-rv style="margin-top:clamp(26px,3.2vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:1px;background:#e6e6e6;border-top:1px solid #1a1a1a;border-bottom:1px solid #e6e6e6">
+    <div data-rv style="margin-top:clamp(26px,3.2vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:1px;background:#e6e6e6;border-top:1px solid #1a1a1a;border-bottom:1px solid #e6e6e6">
       <div style="background:#fff;padding:24px 28px 28px 0">
         <div style="font-family:IBM Plex Mono, monospace;font-size:10px;letter-spacing:.22em;color:#000;margin-bottom:11px">01 &nbsp;REPETITION</div>
         <p style="margin:0;font-size:15.5px;line-height:1.64;color:#1c1c1c;font-weight:350;text-wrap:pretty">The same work is performed again and again, by someone who has performed it a hundred times before.</p>
@@ -374,7 +380,7 @@ input,textarea,button{font:inherit}
       <div style="flex:0 0 132px;font-family:IBM Plex Mono, monospace;font-size:10px;letter-spacing:.32em;color:#9a9a9a;padding-top:4px">SIGNALS</div>
       <div style="flex:1 1 min(100%,640px)">
         <p style="margin:0 0 22px;font-size:15.5px;line-height:1.7;color:#4a4a4a;font-weight:350;max-width:64ch;text-wrap:pretty">Those conditions usually surface as ordinary complaints. None of these is the problem. Each one is a symptom of a condition above, and the audit exists to find which.</p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));column-gap:44px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(360px,100%),1fr));column-gap:44px">
           <p style="margin:0;padding:11px 0;border-top:1px solid #ececec;font-size:14.5px;line-height:1.56;color:#5a5a5a;font-weight:350">Enquiries arriving faster than anyone can answer them properly</p>
           <p style="margin:0;padding:11px 0;border-top:1px solid #ececec;font-size:14.5px;line-height:1.56;color:#5a5a5a;font-weight:350">Quotations that go out and are never chased</p>
           <p style="margin:0;padding:11px 0;border-top:1px solid #ececec;font-size:14.5px;line-height:1.56;color:#5a5a5a;font-weight:350">Scheduling, rebooking and confirmation held in one person&rsquo;s head</p>
@@ -702,7 +708,7 @@ input,textarea,button{font:inherit}
         <span>SPECIMEN SHEET · THE THREE ARTEFACTS · STRUCTURE ONLY</span>
         <span style="color:#9a9a9a">BLANK</span>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1px;background:#e6e6e6;border-top:1px solid #e6e6e6">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:1px;background:#e6e6e6;border-top:1px solid #e6e6e6">
         <div style="background:#fff;padding:26px 22px 30px">
           <div style="font-family:IBM Plex Mono, monospace;font-size:9.5px;letter-spacing:.24em;color:#8a8a8a;margin-bottom:18px">I · THE AUDIT<br><span style="color:#b5b5b5">FINDING, STRUCTURE</span></div>
           <div style="font-family:IBM Plex Mono, monospace;font-size:11.5px;line-height:2.1;color:#1c1c1c;overflow-wrap:anywhere">
