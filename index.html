@@ -269,7 +269,7 @@ input,textarea,button{font:inherit}
           <div style="background:#fff;padding:26px 0 30px 24px">
             <div style="font-family:IBM Plex Mono, monospace;font-size:9.5px;letter-spacing:.24em;color:#8a8a8a;margin-bottom:14px">IF THERE IS NOTHING</div>
             <p style="margin:0;font-size:16px;line-height:1.72;color:#1c1c1c;font-weight:350;text-wrap:pretty">If the audit finds nothing worth automating, it says so, and that is the end of it. No installation is proposed.</p>
-            <canvas id="nullbg" style="display:block;width:100%;height:132px;margin-top:22px"></canvas>
+            <canvas id="nullbg" style="display:block;width:100%;height:164px;margin-top:22px"></canvas>
           </div>
         </div>
         <div style="margin-top:36px;display:flex;flex-wrap:wrap;gap:16px 22px;align-items:center">
@@ -1136,7 +1136,7 @@ class Component extends DCLogic {
     /* ---------- the null return (L2 · GATE A) ---------- */
     reg('nullbg', (st, rgba) => {
       const { W, H } = st;
-      const CX = W*0.5, CY = H*0.5, R = Math.min(W*0.34, H*0.40);
+      const CX = W*0.5, CY = H*0.5, R = Math.min(W*0.34, H*0.40, H*0.5-26);
       const CYCLE = 9.2;
       return t => {
         const { ctx } = st;
@@ -1155,10 +1155,10 @@ class Component extends DCLogic {
           });
           ctx.strokeStyle=rgba(0.14*bA);
           ctx.beginPath(); ctx.moveTo(CX-R,CY); ctx.lineTo(CX+R,CY); ctx.moveTo(CX,CY-R); ctx.lineTo(CX,CY+R); ctx.stroke();
-          ctx.font='8.5px "IBM Plex Mono",monospace'; ctx.textAlign='center';
-          ctx.fillStyle=rgba(0.46*bA);
-          ctx.fillText('ONTOLOGICAL DETERMINATION', CX, CY-R-9);
-          ctx.fillText('GATE A', CX, CY+R+15);
+          ctx.font='9.5px "IBM Plex Mono",monospace'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+          ctx.fillStyle=rgba(0.62*bA);
+          ctx.fillText('ONTOLOGICAL DETERMINATION', CX, CY-R-10);
+          ctx.fillText('GATE A', CX, CY+R+17);
         }
         const mA = k<400 ? 1 : Math.max(0,1-(k-400)/38);
         if (mA>0.01){ ctx.fillStyle=rgba(mA*0.9); ctx.beginPath(); ctx.arc(mx,CY,2.6,0,TAU); ctx.fill(); }
