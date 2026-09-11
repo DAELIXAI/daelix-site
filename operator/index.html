@@ -286,7 +286,7 @@ var K = {client:"daelix.client", token:"daelix.token", name:"daelix.name", base:
 var S = {
   client:"", token:"", name:"", base:DEFAULT_BASE,
   screen:"gate",
-  gates:null, record:null, cells:null, report:null,
+  gates:null, record:null, cells:null, report:null, stopped:false,
   loading:{}, error:{},
   month:"",
   open:{}          /* gate id to true when the draft is unfolded */
@@ -368,7 +368,10 @@ function post(path, body){
       if (!r.ok){
         var m = "THE SERVER ANSWERED " + r.status;
         if (data && data.error) m += ". " + String(data.error).toUpperCase();
-        throw new Error(m);
+        var err = new Error(m);
+        err.status = r.status;
+        err.data = (data && typeof data === "object") ? data : null;
+        throw err;
       }
       return data;
     });
@@ -451,11 +454,15 @@ function gateCard(g, i){
        + (sp ? " disabled" : "") + '>'
        + '<div class="meta">THE FIGURE COMES FROM YOU. THE MACHINE NEVER PROPOSES ONE.</div></div>';
   }
-  h += '<div class="acts">'
-     + '<button class="btn solid" type="button" data-act="APPROVE" data-id="' + esc(id) + '">APPROVE</button>'
-     + '<button class="btn ghost" type="button" data-act="ROUTE" data-id="' + esc(id) + '">ROUTE</button>'
-     + '<button class="btn ghost" type="button" data-act="REFUSE" data-id="' + esc(id) + '">REFUSE</button>'
-     + '</div>';
+  if (!sp && S.stopped){
+    h += '<div class="note inv" style="margin:14px 0 0"><span class="lbl">STOPPED</span><p>The stop stands. This gate is held as it is: nothing can be approved, routed or refused until a person at DAELIX restarts the tenancy, on the record.</p></div>';
+  } else {
+    h += '<div class="acts">'
+       + '<button class="btn solid" type="button" data-act="APPROVE" data-id="' + esc(id) + '">APPROVE</button>'
+       + '<button class="btn ghost" type="button" data-act="ROUTE" data-id="' + esc(id) + '">ROUTE</button>'
+       + '<button class="btn ghost" type="button" data-act="REFUSE" data-id="' + esc(id) + '">REFUSE</button>'
+       + '</div>';
+  }
   h += '<div class="meta">RAISED ' + (sp?BLANK:stamp(g.raised_at)) + ' · STATUS ' + (sp?BLANK:upper(g.status)) + ' · ID ' + (sp?BLANK:val(g.id)) + '</div>';
   h += '</article>';
   return h;
@@ -471,10 +478,12 @@ function renderGate(){
   if (S.loading.gates) { box.innerHTML = waiting("READING THE GATE"); return; }
   if (S.error.gates)   { box.innerHTML = fault(S.error.gates, "gates"); return; }
   var gs = S.gates || [];
-  el("gateSub").textContent = gs.length ? (gs.length + (gs.length===1 ? " DECISION WAITING" : " DECISIONS WAITING")) : "WHAT IS WAITING FOR YOU";
+  el("gateSub").textContent = S.stopped ? "STOPPED · THE STOP STANDS · NOTHING IS DRAFTED OR SENT" : (gs.length ? (gs.length + (gs.length===1 ? " DECISION WAITING" : " DECISIONS WAITING")) : "WHAT IS WAITING FOR YOU");
   el("tabCount").textContent = gs.length ? String(gs.length) : "";
   if (!gs.length){
-    box.innerHTML = '<div class="empty"><span class="lbl">GATE</span><p>Nothing is waiting. The queue is the honest state of the business.</p></div>';
+    box.innerHTML = S.stopped
+      ? '<div class="empty"><span class="lbl">STOPPED</span><p>Nothing is waiting and nothing is drafted. The stop stands until a person at DAELIX restarts the tenancy, on the record.</p></div>'
+      : '<div class="empty"><span class="lbl">GATE</span><p>Nothing is waiting. The queue is the honest state of the business.</p></div>';
     return;
   }
   box.innerHTML = gs.map(gateCard).join("");
@@ -539,8 +548,13 @@ function cellCard(c, i){
      + '<span class="lbl">VERIFIER</span><span class="v mono">' + (sp?BLANK:val(c.verifier)) + '</span>'
      + '</div>';
   var atShow = (!sp && stage==="SHOW");
-  h += '<div class="acts"><button class="btn ghost wide" type="button" data-act="REVOKE" data-id="' + esc(id) + '"'
-     + (atShow ? " disabled" : "") + '>REVOKE TO SHOW</button></div>';
+  var stopped = (!sp && stage==="STOPPED");
+  if (stopped){
+    h += '<div class="note inv" style="margin:14px 0 0"><span class="lbl">STOPPED</span><p>The stop stands. Nothing is drafted and nothing is sent. A person at DAELIX restarts it, on the record.</p></div>';
+  } else {
+    h += '<div class="acts"><button class="btn ghost wide" type="button" data-act="REVOKE" data-id="' + esc(id) + '"'
+       + (atShow ? " disabled" : "") + '>REVOKE TO SHOW</button></div>';
+  }
   h += '</article>';
   return h;
 }
@@ -705,15 +719,45 @@ function sendDecision(){
   if (st.kind==="ROUTE") body.route_to = to;
 
   busySheet(st.kind);
-  post("/decide", body).then(function(){
+  post("/decide", body).then(function(d){
     closeSheet();
     S.open[st.id] = false;
     if (S.gates) S.gates = S.gates.filter(function(g){ return txt(g.id) !== st.id; });
     renderGate();
-    flash(st.kind + " WRITTEN TO THE RECORD, SIGNED " + by.toUpperCase());
+    var wrote = !!(d && typeof d === "object" && (d.written===true || d.written==="true"));
+    var already = !!(d && typeof d === "object" && d.outcome === "already_decided");
+    if (already || !wrote) flash("ALREADY DECIDED. THIS GATE WAS CLOSED BEFORE YOUR " + st.kind + " ARRIVED. NOTHING WAS WRITTEN UNDER YOUR NAME");
+    else flash(st.kind + " WRITTEN TO THE RECORD, SIGNED " + by.toUpperCase());
     load("gates", true);
   }).catch(function(e){
-    sheetMessage("NOT SENT", e.message + ". Nothing was written. Try again when you have a signal.");
+    var o = (e.data && e.data.outcome) || "";
+    if (o === "stopped"){
+      sheetMessage("THE STOP STANDS", "Nothing was sent and nothing was written. Everything for this tenancy is stopped until a person at DAELIX restarts it, on the record.");
+      return;
+    }
+    if (o === "held"){
+      closeSheet();
+      S.open[st.id] = false;
+      if (S.gates) S.gates = S.gates.filter(function(g){ return txt(g.id) !== st.id; });
+      renderGate();
+      flash("HELD. THE GATE HAS NO ADDRESS TO SEND TO. IT IS ON THE RECORD, SIGNED " + by.toUpperCase());
+      load("gates", true);
+      return;
+    }
+    if (o === "not_found"){
+      sheetMessage("ALREADY DECIDED", "This gate is no longer open. Nothing was written. The queue will refresh.");
+      load("gates", true);
+      return;
+    }
+    if (o === "unavailable"){
+      sheetMessage("NOT DONE", "The cell register could not be read, so nothing was done. Try again in a moment.");
+      return;
+    }
+    if (e.data && e.data.written){
+      sheetMessage("WRITTEN, NOT SENT", e.message + ". The record line was written. Refresh the queue before deciding again.");
+      return;
+    }
+    sheetMessage("NOT SENT", e.message + (e.status ? ". Nothing was written. Try again in a moment." : ". Nothing was written. Try again when you have a signal."));
   });
 }
 
@@ -772,9 +816,11 @@ function doRevoke(id, btn){
     load("cells", true);
   }).catch(function(e){
     if (btn){ btn.removeAttribute("disabled"); btn.textContent = "REVOKE TO SHOW"; }
-    openSheet(sheetHead("NOT DONE", "The revoke did not go through")
-      + '<div class="body"><p>' + esc(e.message) + '. The cell is unchanged.</p></div>'
+    var stopped = !!(e.data && e.data.outcome === "stopped");
+    openSheet(sheetHead(stopped ? "THE STOP STANDS" : "NOT DONE", stopped ? "The stop stands on this cell" : "The revoke did not go through")
+      + '<div class="body"><p>' + (stopped ? "Nothing was changed. A person at DAELIX restarts a stopped cell, on the record." : esc(e.message) + ". The cell is unchanged.") + '</p></div>'
       + '<div class="foot"><button class="btn ghost wide" type="button" data-act="CLOSE">CLOSE</button></div>');
+    if (stopped) load("cells", true);
   });
 }
 
@@ -782,12 +828,12 @@ function doRevoke(id, btn){
 function openStop(){
   if (specimen()){
     openSheet(sheetHead("SPECIMEN · STOP", "Stop everything")
-      + '<div class="body"><p>Nothing is sent. With your token in place this would <b>deactivate every workflow in your tenancy, write the incident line and notify DAELIX.</b> It takes a reason and a second tap.</p></div>'
+      + '<div class="body"><p>Nothing is sent. With your token in place this would <b>stop all drafting and sending for your tenancy, write the incident line and tell DAELIX.</b> It takes a reason and a second tap.</p></div>'
       + '<div class="foot"><button class="btn ghost wide" type="button" data-act="CLOSE">CLOSE</button></div>');
     return;
   }
   openSheet(sheetHead("STOP", "Stop everything for this tenancy")
-    + '<div class="body"><p>Every workflow of yours is deactivated. The incident line is written and DAELIX is told. Nothing restarts without a person.</p></div>'
+    + '<div class="body"><p>Nothing is drafted and nothing is sent while the stop stands. The register keeps recording what arrives. The incident line is written and DAELIX is told. Nothing restarts without a person.</p></div>'
     + '<div class="field"><label class="lbl" for="sNote">REASON</label><textarea id="sNote" placeholder="' + BLANK + '"></textarea></div>'
     + nameField()
     + '<div class="foot"><button class="btn solid wide" type="button" data-act="STOP_ARM">STOP EVERYTHING</button>'
@@ -808,8 +854,9 @@ function stopArm(btn){
   btn.setAttribute("disabled","disabled");
   post("/stop", {reason:note, by:by}).then(function(){
     openSheet(sheetHead("STOPPED", "Everything is stopped")
-      + '<div class="body"><p>Your workflows are deactivated, the incident line is written and DAELIX is told. Nothing restarts without a person.</p></div>'
+      + '<div class="body"><p>Nothing is drafted and nothing is sent while the stop stands. The register keeps recording what arrives. The incident line is written and DAELIX is told. Nothing restarts without a person.</p></div>'
       + '<div class="foot"><button class="btn ghost wide" type="button" data-act="CLOSE">CLOSE</button></div>');
+    S.stopped = true;
     S.gates = null; S.cells = null;
     load("gates", true);
   }).catch(function(e){
@@ -850,7 +897,7 @@ function load(which, force){
   S.loading[which] = true; S.error[which] = "";
   paint();
   var p;
-  if (which==="gates")  p = post("/gates", {}).then(function(d){ S.gates = pick(d,"gates"); });
+  if (which==="gates")  p = post("/gates", {}).then(function(d){ S.gates = pick(d,"gates"); S.stopped = !!(d && typeof d === "object" && !Array.isArray(d) && (d.stopped===true || d.stopped==="true")); });
   if (which==="record") p = post("/record", {limit:100}).then(function(d){ S.record = pick(d,"lines"); });
   if (which==="cells")  p = post("/cells", {}).then(function(d){ S.cells = pick(d,"cells"); });
   if (which==="report") p = post("/report", {month:S.month}).then(function(d){ S.report = pickText(d); });

@@ -4,7 +4,7 @@
    passes every POST and every cross origin request straight to the network,
    so no decision, no record line and no token is ever stored in the cache. */
 
-var CACHE = "daelix-client-view-v1";
+var CACHE = "daelix-client-view-v2";
 
 var SHELL = [
   "./",
