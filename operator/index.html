@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DAELIX OPERATOR · CLIENT VIEW</title>
+<meta name="description" content="Decide, see the record, stop. The client view of a DAELIX tenancy.">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="DAELIX">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>
+@font-face{font-family:'PlexMono';src:url('fonts/IBMPlexMono-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'PlexMono';src:url('fonts/IBMPlexMono-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'PlexMono';src:url('fonts/IBMPlexMono-SemiBold.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Archivo';src:url('fonts/Archivo-400.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Archivo';src:url('fonts/Archivo-700.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'ArchivoSemi';src:url('fonts/Archivo-400-semiexpanded.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+
+:root{
+  --bg:#000;
+  --fg:#fff;
+  --grey:#8a8a8a;
+  --line:rgba(255,255,255,.20);
+  --hair:rgba(255,255,255,.11);
+  --topH:54px;
+  --tabH:58px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--fg);overflow-x:hidden}
+body{
+  font-family:'Archivo',system-ui,sans-serif;
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:100%;
+  overscroll-behavior-y:none;
+}
+button,input,textarea,select{font:inherit;color:inherit;background:none;border:0;border-radius:0}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+ul{list-style:none}
+
+/* labels, the mono voice */
+.lbl,.tab b,.btn,.chip,.tag,.mono{font-family:'PlexMono',ui-monospace,monospace}
+.lbl{font-size:9.5px;line-height:1.5;letter-spacing:.22em;color:var(--grey);text-transform:uppercase}
+.lbl.w{color:var(--fg)}
+
+/* top */
+#top{position:fixed;top:0;left:0;right:0;z-index:40;background:var(--bg)}
+header{display:flex;align-items:center;gap:12px;height:54px;padding:0 14px;border-bottom:1px solid var(--line)}
+.mark{width:24px;height:24px;flex:0 0 24px;display:block}
+.who{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:3px;text-align:left;padding:6px 2px;min-height:48px}
+.who .l1{font-family:'PlexMono',monospace;font-size:10px;letter-spacing:.24em;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who .l2{font-family:'PlexMono',monospace;font-size:9px;letter-spacing:.2em;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#stopBtn{
+  flex:0 0 auto;min-height:48px;min-width:74px;padding:0 14px;
+  border:1px solid var(--fg);color:var(--fg);
+  font-size:10px;letter-spacing:.26em;font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+}
+#stopBtn:active{background:var(--fg);color:var(--bg)}
+#banner{border-bottom:1px solid var(--line);padding:9px 14px;background:var(--bg)}
+#banner p{font-family:'PlexMono',monospace;font-size:9px;line-height:1.75;letter-spacing:.17em;color:var(--fg);text-transform:uppercase}
+#banner[hidden]{display:none}
+
+/* main */
+main{padding-top:var(--topH);padding-bottom:calc(var(--tabH) + env(safe-area-inset-bottom,0px) + 18px);min-height:100vh}
+.pad{padding:0 14px}
+.screen[hidden]{display:none}
+.screenhead{padding:20px 14px 16px;border-bottom:1px solid var(--line)}
+.screenhead h1{font-family:'ArchivoSemi','Archivo',sans-serif;font-weight:400;font-size:26px;line-height:1.1;letter-spacing:.01em}
+.screenhead .sub{margin-top:8px;font-family:'PlexMono',monospace;font-size:9.5px;letter-spacing:.2em;color:var(--grey);text-transform:uppercase;line-height:1.7}
+
+/* cards */
+.card{border-bottom:1px solid var(--line);padding:18px 14px 20px}
+.kv{display:grid;grid-template-columns:74px minmax(0,1fr);gap:7px 12px;align-items:baseline}
+.kv .v{font-family:'Archivo',sans-serif;font-size:14px;line-height:1.45;color:var(--fg);overflow-wrap:anywhere}
+.kv .v.mono{font-family:'PlexMono',monospace;font-size:11px;letter-spacing:.08em;color:var(--grey)}
+.qlbl{display:block;margin-top:16px}
+.q{margin:8px 0 0;font-family:'Archivo',sans-serif;font-size:17px;line-height:1.42;letter-spacing:-.004em;color:var(--fg)}
+.clock{margin-top:14px;border:1px solid var(--line);padding:10px 12px}
+.clock .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.clock .amt{font-family:'PlexMono',monospace;font-size:12px;font-weight:600;letter-spacing:.14em;color:var(--fg)}
+.clock .bar{margin-top:9px;height:2px;background:var(--hair)}
+.clock .bar i{display:block;height:2px;background:var(--fg)}
+.clock.over .amt{background:var(--fg);color:var(--bg);padding:2px 6px}
+
+.fold{display:flex;width:100%;min-height:48px;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding:0 12px;border:1px solid var(--line);font-size:10px;letter-spacing:.24em;color:var(--fg);text-align:left}
+.fold .sign{font-size:13px;color:var(--grey)}
+.draft{border:1px solid var(--line);border-top:0;padding:14px 12px 16px}
+.draft[hidden]{display:none}
+.draft p{font-family:'Archivo',sans-serif;font-size:14.5px;line-height:1.65;color:var(--fg);white-space:pre-wrap;overflow-wrap:anywhere}
+.draft .lbl{margin-bottom:8px;display:block}
+
+.ver{margin-top:14px;border-top:1px solid var(--hair);padding-top:14px}
+.ver .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;min-height:22px;padding:1px 9px;border:1px solid var(--fg);font-size:9.5px;letter-spacing:.22em;font-weight:600}
+.chip.fail{background:var(--fg);color:var(--bg)}
+.reasons{margin-top:10px;display:grid;gap:7px}
+.reasons li{position:relative;padding-left:14px;font-family:'Archivo',sans-serif;font-size:13.5px;line-height:1.5;color:var(--grey);overflow-wrap:anywhere}
+.reasons li:before{content:"";position:absolute;left:0;top:.62em;width:6px;height:1px;background:var(--grey)}
+
+.field{margin-top:16px}
+.field .lbl{display:block;margin-bottom:8px}
+.field input,.field textarea{
+  display:block;width:100%;min-height:48px;padding:12px;
+  border:1px solid var(--line);background:#000;color:var(--fg);
+  font-family:'Archivo',sans-serif;font-size:16px;line-height:1.4;
+}
+.field textarea{min-height:92px;resize:vertical}
+.field input:focus,.field textarea:focus{outline:0;border-color:var(--fg)}
+.field input::placeholder,.field textarea::placeholder{color:var(--grey);font-family:'PlexMono',monospace;font-size:12px;letter-spacing:.1em}
+
+.acts{margin-top:18px;display:grid;gap:8px}
+.btn{display:flex;align-items:center;justify-content:center;min-height:52px;padding:0 14px;border:1px solid var(--fg);font-size:11px;font-weight:600;letter-spacing:.26em;text-align:center}
+.btn.solid{background:var(--fg);color:var(--bg)}
+.btn.solid:active{background:var(--grey)}
+.btn.ghost:active{background:var(--fg);color:var(--bg)}
+.btn[disabled]{border-color:var(--line);color:var(--grey);background:none;cursor:default}
+.btn.wide{width:100%}
+.meta{margin-top:14px;font-family:'PlexMono',monospace;font-size:9px;letter-spacing:.18em;color:var(--grey);line-height:1.8;text-transform:uppercase;overflow-wrap:anywhere}
+
+/* notes, faults, empties */
+.note{margin:14px;border:1px solid var(--line);padding:14px}
+.note p{font-family:'Archivo',sans-serif;font-size:14px;line-height:1.6;color:var(--fg)}
+.note .lbl{display:block;margin-bottom:8px}
+.note.inv{background:var(--fg)}
+.note.inv p,.note.inv .lbl{color:var(--bg)}
+.empty{padding:34px 14px;border-bottom:1px solid var(--line)}
+.empty .lbl{display:block;margin-bottom:10px}
+.empty p{font-family:'Archivo',sans-serif;font-size:15px;line-height:1.6;color:var(--grey)}
+
+/* record */
+.line{border-bottom:1px solid var(--hair);padding:14px}
+.line.fault{border-left:3px solid var(--fg);padding-left:11px}
+.line .head{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tag{display:inline-flex;align-items:center;min-height:18px;padding:1px 7px;border:1px solid var(--line);font-size:8.5px;letter-spacing:.2em;color:var(--grey);text-transform:uppercase}
+.tag.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.line .t{font-family:'PlexMono',monospace;font-size:9.5px;letter-spacing:.16em;color:var(--grey)}
+.line p{margin-top:9px;font-family:'Archivo',sans-serif;font-size:14.5px;line-height:1.55;color:var(--fg);overflow-wrap:anywhere}
+.line .foot{margin-top:9px;font-family:'PlexMono',monospace;font-size:9px;letter-spacing:.16em;color:var(--grey);text-transform:uppercase;overflow-wrap:anywhere}
+
+/* cells */
+.rung{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line)}
+.rung div{min-height:38px;display:flex;align-items:center;justify-content:center;font-family:'PlexMono',monospace;font-size:9.5px;letter-spacing:.2em;color:var(--grey);border-right:1px solid var(--hair)}
+.rung div:last-child{border-right:0}
+.rung div.on{background:var(--fg);color:var(--bg);font-weight:600}
+
+/* report */
+.reportbar{display:flex;align-items:stretch;gap:8px;padding:14px}
+.reportbar button{flex:0 0 52px;min-height:48px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:'PlexMono',monospace;font-size:14px}
+.reportbar .m{flex:1 1 auto;min-height:48px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:'PlexMono',monospace;font-size:11px;letter-spacing:.24em}
+.reporttext{padding:4px 14px 30px}
+.reporttext pre{font-family:'Archivo',sans-serif;font-size:14.5px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--fg)}
+
+/* tabs */
+#tabs{
+  position:fixed;left:0;right:0;bottom:0;z-index:40;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:var(--bg);border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.tab{min-height:var(--tabH);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--grey)}
+.tab b{font-size:10px;font-weight:600;letter-spacing:.2em}
+.tab .dot{width:5px;height:5px;background:transparent}
+.tab[aria-selected="true"]{color:var(--fg)}
+.tab[aria-selected="true"] .dot{background:var(--fg)}
+.tab .count{font-family:'PlexMono',monospace;font-size:8.5px;letter-spacing:.14em;color:var(--grey)}
+
+/* sheet */
+#veil{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.72);display:none}
+#veil.open{display:block}
+.sheet{
+  position:fixed;left:0;right:0;bottom:0;z-index:51;
+  background:var(--bg);border-top:1px solid var(--fg);
+  max-height:92vh;overflow-y:auto;
+  padding:18px 14px calc(20px + env(safe-area-inset-bottom,0px));
+  display:none;
+}
+.sheet.open{display:block}
+.sheet h2{font-family:'ArchivoSemi','Archivo',sans-serif;font-weight:400;font-size:21px;line-height:1.2;margin-top:10px}
+.sheet .body{margin-top:12px;font-family:'Archivo',sans-serif;font-size:14.5px;line-height:1.6;color:var(--grey)}
+.sheet .body b{color:var(--fg);font-weight:700}
+.sheet .foot{margin-top:20px;display:grid;gap:8px}
+.sheet .grab{width:44px;height:2px;background:var(--line);margin:0 auto 4px}
+
+@media (min-width:700px){
+  main{max-width:660px;margin:0 auto}
+  header,#banner{max-width:660px;margin:0 auto}
+  #tabs{max-width:660px;margin:0 auto;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+  .sheet{max-width:660px;margin:0 auto}
+  .screenhead h1{font-size:30px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .draft,.sheet{animation:none}
+}
+</style>
+</head>
+<body>
+
+<div id="top">
+  <header>
+    <svg class="mark" viewBox="14 14 68 68" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g fill="#ffffff">
+        <polygon points="20,78 27,18 37,18 30,78"></polygon>
+        <polygon points="41,18 59,18 76,35 76,61 59,78 41,78 41,66 54,66 65,55 65,41 54,29 41,29"></polygon>
+      </g>
+    </svg>
+    <button class="who" id="whoBtn" type="button">
+      <span class="l1" id="whoClient">CLIENT ________</span>
+      <span class="l2" id="whoName">SIGNED BY ________</span>
+    </button>
+    <button id="stopBtn" type="button">STOP</button>
+  </header>
+  <div id="banner"><p>SPECIMEN · STRUCTURE ONLY · YOUR OWN LINES ARE THE ONLY ONES THAT WILL EVER FILL IT</p></div>
+</div>
+
+<main>
+  <section class="screen" id="s-gate">
+    <div class="screenhead">
+      <h1>Gate</h1>
+      <div class="sub" id="gateSub">WHAT IS WAITING FOR YOU</div>
+    </div>
+    <div id="gateList"></div>
+  </section>
+
+  <section class="screen" id="s-record" hidden>
+    <div class="screenhead">
+      <h1>Record</h1>
+      <div class="sub">WHAT THE MACHINE DID · READ ONLY · NEWEST FIRST</div>
+    </div>
+    <div id="recordList"></div>
+  </section>
+
+  <section class="screen" id="s-cells" hidden>
+    <div class="screenhead">
+      <h1>Cells</h1>
+      <div class="sub">YOUR CELLS AND THEIR RUNG · REVOKE IS ONE ACTION</div>
+    </div>
+    <div id="cellList"></div>
+  </section>
+
+  <section class="screen" id="s-report" hidden>
+    <div class="screenhead">
+      <h1>Report</h1>
+      <div class="sub">THE MONTH, AS THE RECORD HAS IT</div>
+    </div>
+    <div class="reportbar">
+      <button type="button" id="mPrev" aria-label="Previous month">&lt;</button>
+      <div class="m" id="mLabel">________</div>
+      <button type="button" id="mNext" aria-label="Next month">&gt;</button>
+    </div>
+    <div id="reportBody"></div>
+  </section>
+</main>
+
+<nav id="tabs" role="tablist" aria-label="Screens">
+  <button class="tab" role="tab" data-go="gate" aria-selected="true"><span class="dot"></span><b>GATE</b><span class="count" id="tabCount"></span></button>
+  <button class="tab" role="tab" data-go="record" aria-selected="false"><span class="dot"></span><b>RECORD</b></button>
+  <button class="tab" role="tab" data-go="cells" aria-selected="false"><span class="dot"></span><b>CELLS</b></button>
+  <button class="tab" role="tab" data-go="report" aria-selected="false"><span class="dot"></span><b>REPORT</b></button>
+</nav>
+
+<div id="veil"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="grab"></div><div id="sheetInner"></div></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ------------------------------------------------------------------
+   DAELIX OPERATOR, CLIENT VIEW.
+   Three things the doctrine leaves to a person: decide, see the record, stop.
+   No line of data is ever invented by this file. Where there is no token,
+   the app runs in specimen mode and every value stays blank.
+   ------------------------------------------------------------------ */
+
+var DEFAULT_BASE = "https://theliftedveil.app.n8n.cloud/webhook/client";
+var BLANK = "________";
+var K = {client:"daelix.client", token:"daelix.token", name:"daelix.name", base:"daelix.base"};
+
+var S = {
+  client:"", token:"", name:"", base:DEFAULT_BASE,
+  screen:"gate",
+  gates:null, record:null, cells:null, report:null,
+  loading:{}, error:{},
+  month:"",
+  open:{}          /* gate id to true when the draft is unfolded */
+};
+
+/* ---------- store ---------- */
+function get(k){ try{ return window.localStorage.getItem(k) || ""; }catch(e){ return ""; } }
+function put(k,v){ try{ window.localStorage.setItem(k,v); }catch(e){} }
+function specimen(){ return !S.token; }
+
+/* ---------- small helpers ---------- */
+function esc(s){
+  return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+  });
+}
+function el(id){ return document.getElementById(id); }
+function txt(v){ var s = (v==null?"":String(v)).trim(); return s; }
+function val(v){ var s = txt(v); return s ? esc(s) : BLANK; }
+function upper(v){ return val(v).toUpperCase(); }
+function listOf(v){
+  if (v==null) return [];
+  if (Object.prototype.toString.call(v)==="[object Array]") return v.filter(function(x){ return txt(x); });
+  var s = txt(v);
+  if (!s) return [];
+  return s.split(/\r?\n|;\s*/).map(function(x){ return x.trim(); }).filter(Boolean);
+}
+function monthNow(){
+  var d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0");
+}
+function stamp(v){
+  var s = txt(v);
+  if (!s) return BLANK;
+  var d = new Date(s);
+  if (isNaN(d.getTime())) return esc(s);
+  var p = function(n){ return String(n).padStart(2,"0"); };
+  return p(d.getDate())+"/"+p(d.getMonth()+1)+"/"+d.getFullYear()+" "+p(d.getHours())+":"+p(d.getMinutes());
+}
+
+/* ---------- onboarding from the link ---------- */
+function onboard(){
+  S.client = get(K.client);
+  S.token  = get(K.token);
+  S.name   = get(K.name);
+  S.base   = get(K.base) || DEFAULT_BASE;
+
+  var q = new URLSearchParams(window.location.search);
+  var took = false;
+  var c = q.get("client"), t = q.get("token"), n = q.get("name"), b = q.get("api");
+  if (c){ S.client = c; put(K.client, c); took = true; }
+  if (t){ S.token  = t; put(K.token,  t); took = true; }
+  if (n){ S.name   = n; put(K.name,   n); took = true; }
+  if (b){ S.base   = b; put(K.base,   b); took = true; }
+  if (took){
+    /* the token is taken off the address bar and never shown again */
+    try{ window.history.replaceState({}, document.title, window.location.pathname); }catch(e){}
+  }
+  S.month = monthNow();
+}
+
+/* ---------- the wire ---------- */
+function post(path, body){
+  var url = (S.base || DEFAULT_BASE).replace(/\/+$/,"") + path;
+  var payload = {client:S.client};
+  for (var k in body){ if (Object.prototype.hasOwnProperty.call(body,k)) payload[k] = body[k]; }
+  return fetch(url, {
+    method:"POST",
+    cache:"no-store",
+    headers:{"Content-Type":"application/json","X-Client-Token":S.token},
+    body:JSON.stringify(payload)
+  }).catch(function(){
+    /* a dropped call is said plainly, in our own words */
+    throw new Error(navigator.onLine ? "THE SERVER DID NOT ANSWER" : "THIS PHONE HAS NO SIGNAL");
+  }).then(function(r){
+    return r.text().then(function(t){
+      var data = null;
+      try{ data = t ? JSON.parse(t) : null; }catch(e){ data = t; }
+      if (!r.ok){
+        var m = "THE SERVER ANSWERED " + r.status;
+        if (data && data.error) m += ". " + String(data.error).toUpperCase();
+        throw new Error(m);
+      }
+      return data;
+    });
+  });
+}
+/* n8n answers in several shapes. Take the list wherever it is, invent nothing. */
+function pick(data, key){
+  if (data==null) return [];
+  if (Object.prototype.toString.call(data)==="[object Array]"){
+    if (data.length===1 && data[0] && typeof data[0]==="object" && !Array.isArray(data[0]) && data[0][key]!=null) return pick(data[0], key);
+    return data;
+  }
+  if (typeof data==="object"){
+    if (Array.isArray(data[key])) return data[key];
+    if (Array.isArray(data.data)) return data.data;
+    if (Array.isArray(data.items)) return data.items;
+  }
+  return [];
+}
+function pickText(data){
+  if (data==null) return "";
+  if (typeof data==="string") return data;
+  if (Array.isArray(data)) return data.length ? pickText(data[0]) : "";
+  if (typeof data==="object") return txt(data.text || data.report || data.body || "");
+  return "";
+}
+
+/* ---------- the clock, Law 04, twenty four hours ---------- */
+function clockHTML(deadline){
+  if (specimen()){
+    return '<div class="clock"><div class="row"><span class="lbl">CLOCK · 24 HOURS</span>'
+         + '<span class="amt">' + BLANK + '</span></div><div class="bar"><i style="width:0"></i></div></div>';
+  }
+  var d = new Date(txt(deadline));
+  if (!txt(deadline) || isNaN(d.getTime())) return "";
+  var ms = d.getTime() - Date.now();
+  var over = ms < 0;
+  var a = Math.abs(ms);
+  var h = Math.floor(a/3600000), m = Math.floor((a%3600000)/60000);
+  var amt = (over ? "OVERDUE BY " : "") + h + "H " + String(m).padStart(2,"0") + "M" + (over ? "" : " LEFT");
+  var pct = over ? 100 : Math.max(0, Math.min(100, 100 - (ms/86400000)*100));
+  return '<div class="clock' + (over ? " over" : "") + '" data-deadline="' + esc(txt(deadline)) + '">'
+       + '<div class="row"><span class="lbl">CLOCK · 24 HOURS · DUE ' + stamp(deadline) + '</span></div>'
+       + '<div class="row" style="margin-top:6px"><span class="amt">' + esc(amt) + '</span></div>'
+       + '<div class="bar"><i style="width:' + pct.toFixed(1) + '%"></i></div></div>';
+}
+
+/* ---------- GATE ---------- */
+function gateCard(g, i){
+  var sp = specimen();
+  var id = sp ? ("specimen-" + i) : txt(g.id);
+  var reasons = sp ? [BLANK, BLANK] : listOf(g.reasons);
+  var verdict = sp ? BLANK : upper(g.verdict);
+  var fail = !sp && /FAIL|REFUSE|BLOCK|FAULT/.test(verdict);
+  var needsFig = sp ? (i===0) : (g.needs_figure===true || g.needs_figure==="true");
+  var figLabel = sp ? "FIGURE (YOU TYPE IT)" : (txt(g.figure_label) ? txt(g.figure_label).toUpperCase() : "FIGURE (YOU TYPE IT)");
+  var opened = !!S.open[id];
+  var clock = sp ? (i===0 ? clockHTML(null) : "") : clockHTML(g.clock_deadline);
+
+  var h = '<article class="card" data-gate="' + esc(id) + '">';
+  h += '<div class="kv">'
+     + '<span class="lbl">CELL</span><span class="v mono">' + (sp?BLANK:upper(g.cell)) + '</span>'
+     + '<span class="lbl">PERSON</span><span class="v">' + (sp?BLANK:val(g.person)) + '</span>'
+     + '</div>';
+  h += '<span class="lbl qlbl">THE QUESTION</span>';
+  h += '<p class="q">' + (sp?BLANK:val(g.question)) + '</p>';
+  h += clock;
+  h += '<button class="fold" type="button" data-act="fold" data-id="' + esc(id) + '" aria-expanded="' + (opened?"true":"false") + '">'
+     + '<span>DRAFT · TAP TO ' + (opened ? "FOLD" : "OPEN") + '</span><span class="sign">' + (opened ? "-" : "+") + '</span></button>';
+  h += '<div class="draft"' + (opened ? "" : " hidden") + '><span class="lbl">THE DRAFT AS IT STANDS</span>'
+     + '<p>' + (sp?BLANK:val(g.draft)) + '</p></div>';
+  h += '<div class="ver"><div class="top"><span class="lbl">VERIFIER</span>'
+     + '<span class="chip' + (fail?" fail":"") + '">' + verdict + '</span></div>';
+  h += '<ul class="reasons">' + (reasons.length
+        ? reasons.map(function(r){ return '<li>' + (sp ? BLANK : esc(r)) + '</li>'; }).join("")
+        : '<li>' + BLANK + '</li>') + '</ul></div>';
+  if (needsFig){
+    h += '<div class="field"><label class="lbl" for="fig-' + esc(id) + '">' + esc(figLabel) + '</label>'
+       + '<input id="fig-' + esc(id) + '" type="text" inputmode="decimal" autocomplete="off" data-fig="' + esc(id) + '" placeholder="' + BLANK + '"'
+       + (sp ? " disabled" : "") + '>'
+       + '<div class="meta">THE FIGURE COMES FROM YOU. THE MACHINE NEVER PROPOSES ONE.</div></div>';
+  }
+  h += '<div class="acts">'
+     + '<button class="btn solid" type="button" data-act="APPROVE" data-id="' + esc(id) + '">APPROVE</button>'
+     + '<button class="btn ghost" type="button" data-act="ROUTE" data-id="' + esc(id) + '">ROUTE</button>'
+     + '<button class="btn ghost" type="button" data-act="REFUSE" data-id="' + esc(id) + '">REFUSE</button>'
+     + '</div>';
+  h += '<div class="meta">RAISED ' + (sp?BLANK:stamp(g.raised_at)) + ' · STATUS ' + (sp?BLANK:upper(g.status)) + ' · ID ' + (sp?BLANK:val(g.id)) + '</div>';
+  h += '</article>';
+  return h;
+}
+function renderGate(){
+  var box = el("gateList");
+  if (specimen()){
+    box.innerHTML = [gateCard({},0), gateCard({},1)].join("") + specimenFoot("A card for every decision waiting. Your lines fill it, and nobody else's.");
+    el("gateSub").textContent = "WHAT IS WAITING FOR YOU";
+    el("tabCount").textContent = "";
+    return;
+  }
+  if (S.loading.gates) { box.innerHTML = waiting("READING THE GATE"); return; }
+  if (S.error.gates)   { box.innerHTML = fault(S.error.gates, "gates"); return; }
+  var gs = S.gates || [];
+  el("gateSub").textContent = gs.length ? (gs.length + (gs.length===1 ? " DECISION WAITING" : " DECISIONS WAITING")) : "WHAT IS WAITING FOR YOU";
+  el("tabCount").textContent = gs.length ? String(gs.length) : "";
+  if (!gs.length){
+    box.innerHTML = '<div class="empty"><span class="lbl">GATE</span><p>Nothing is waiting. The queue is the honest state of the business.</p></div>';
+    return;
+  }
+  box.innerHTML = gs.map(gateCard).join("");
+}
+
+/* ---------- RECORD ---------- */
+function isFault(r){
+  if (r.fault===true || r.fault==="true") return true;
+  return /FAULT|ERROR|FAIL/.test(String(r.stage||"").toUpperCase());
+}
+function isRepair(r){
+  if (r.repair===true || r.repair==="true") return true;
+  return /REPAIR/.test(String(r.stage||"").toUpperCase());
+}
+function recordLine(r, i){
+  var sp = specimen();
+  var f = !sp && isFault(r), rp = !sp && isRepair(r);
+  var h = '<div class="line' + (f ? " fault" : "") + '">';
+  h += '<div class="head"><span class="t">' + (sp?BLANK:stamp(r.t)) + '</span>'
+     + '<span class="tag">' + (sp?BLANK:upper(r.cell)) + '</span>'
+     + '<span class="tag' + ((f||rp) ? " on" : "") + '">' + (sp?BLANK:upper(r.stage)) + '</span>'
+     + (f ? '<span class="tag on">FAULT</span>' : '')
+     + (rp ? '<span class="tag on">REPAIR</span>' : '')
+     + '</div>';
+  h += '<p>' + (sp?BLANK:val(r.line)) + '</p>';
+  h += '<div class="foot">ACTOR ' + (sp?BLANK:val(r.actor)) + ' · EXECUTION ' + (sp?BLANK:val(r.execution)) + '</div>';
+  h += '</div>';
+  return h;
+}
+function renderRecord(){
+  var box = el("recordList");
+  if (specimen()){
+    box.innerHTML = [recordLine({},0), recordLine({},1), recordLine({},2)].join("")
+      + specimenFoot("Every line the machine wrote for you, newest first, faults marked. Read only.");
+    return;
+  }
+  if (S.loading.record){ box.innerHTML = waiting("READING THE RECORD"); return; }
+  if (S.error.record){ box.innerHTML = fault(S.error.record, "record"); return; }
+  var rs = S.record || [];
+  if (!rs.length){
+    box.innerHTML = '<div class="empty"><span class="lbl">RECORD</span><p>No lines yet for this tenancy.</p></div>';
+    return;
+  }
+  box.innerHTML = rs.map(recordLine).join("");
+}
+
+/* ---------- CELLS ---------- */
+function cellCard(c, i){
+  var sp = specimen();
+  var id = sp ? ("specimen-cell-" + i) : txt(c.id);
+  var stage = sp ? "" : upper(c.stage);
+  var at = function(n){ return (stage===n) ? " on" : ""; };
+  var h = '<article class="card" data-cell="' + esc(id) + '">';
+  h += '<div class="kv">'
+     + '<span class="lbl">CELL</span><span class="v mono">' + (sp?BLANK:upper(c.name)) + '</span>'
+     + '<span class="lbl">JOB</span><span class="v">' + (sp?BLANK:val(c.job)) + '</span>'
+     + '</div>';
+  h += '<div class="rung"><div class="' + at("SHOW").trim() + '">SHOW</div><div class="' + at("SHARE").trim() + '">SHARE</div><div class="' + at("CARRY").trim() + '">CARRY</div></div>';
+  h += '<div class="kv" style="margin-top:14px">'
+     + '<span class="lbl">LAST RUN</span><span class="v mono">' + (sp?BLANK:stamp(c.last_run)) + '</span>'
+     + '<span class="lbl">PROOF</span><span class="v mono">' + (sp?BLANK:upper(c.proof)) + '</span>'
+     + '<span class="lbl">VERIFIER</span><span class="v mono">' + (sp?BLANK:val(c.verifier)) + '</span>'
+     + '</div>';
+  var atShow = (!sp && stage==="SHOW");
+  h += '<div class="acts"><button class="btn ghost wide" type="button" data-act="REVOKE" data-id="' + esc(id) + '"'
+     + (atShow ? " disabled" : "") + '>REVOKE TO SHOW</button></div>';
+  h += '</article>';
+  return h;
+}
+function renderCells(){
+  var box = el("cellList");
+  if (specimen()){
+    box.innerHTML = [cellCard({},0), cellCard({},1)].join("")
+      + specimenFoot("One card per cell of yours. Revoke is one action and it returns the cell to SHOW, where you press send.");
+    return;
+  }
+  if (S.loading.cells){ box.innerHTML = waiting("READING THE CELLS"); return; }
+  if (S.error.cells){ box.innerHTML = fault(S.error.cells, "cells"); return; }
+  var cs = S.cells || [];
+  if (!cs.length){
+    box.innerHTML = '<div class="empty"><span class="lbl">CELLS</span><p>No cells are listed for this tenancy.</p></div>';
+    return;
+  }
+  box.innerHTML = cs.map(cellCard).join("");
+}
+
+/* ---------- REPORT ---------- */
+function renderReport(){
+  var box = el("reportBody");
+  el("mLabel").textContent = specimen() ? BLANK : S.month;
+  if (specimen()){
+    box.innerHTML = '<div class="reporttext"><pre>' + BLANK + "\n" + BLANK + "\n\n" + BLANK + "\n" + BLANK + "\n" + BLANK + '</pre></div>'
+      + specimenFoot("The month as the record has it: what ran, what was held, what was routed, what it cost, what you decided.");
+    return;
+  }
+  if (S.loading.report){ box.innerHTML = waiting("READING THE REPORT"); return; }
+  if (S.error.report){ box.innerHTML = fault(S.error.report, "report"); return; }
+  var t = S.report;
+  if (!txt(t)){
+    box.innerHTML = '<div class="empty"><span class="lbl">REPORT</span><p>No report for this month yet.</p></div>';
+    return;
+  }
+  box.innerHTML = '<div class="reporttext"><pre>' + esc(t) + '</pre></div>';
+}
+
+/* ---------- shared fragments ---------- */
+function waiting(what){
+  return '<div class="empty"><span class="lbl">' + esc(what) + '</span><p>Waiting for the server.</p></div>';
+}
+function fault(msg, which){
+  return '<div class="note inv"><span class="lbl">FAULT</span><p>' + esc(msg) + '</p></div>'
+       + '<div class="pad"><button class="btn ghost wide" type="button" data-act="RETRY" data-id="' + esc(which) + '">TRY AGAIN</button></div>'
+       + '<div class="meta pad" style="margin:14px 0 30px">NOTHING IS SHOWN THAT WAS NOT READ FROM THE RECORD.</div>';
+}
+function specimenFoot(line){
+  return '<div class="note"><span class="lbl">SPECIMEN</span><p>' + esc(line) + '</p>'
+       + '<p style="margin-top:10px;color:var(--grey);font-size:13.5px">Open the link DAELIX sent you and this fills with your own work. Until then every field stays blank.</p></div>';
+}
+
+/* ---------- sheets ---------- */
+var sheetState = null;
+function openSheet(html, after){
+  el("sheetInner").innerHTML = html;
+  el("sheet").classList.add("open");
+  el("veil").classList.add("open");
+  document.body.style.overflow = "hidden";
+  if (after) after();
+  var f = el("sheet").querySelector("input,textarea");
+  if (f) { try{ f.focus(); }catch(e){} }
+}
+function closeSheet(){
+  el("sheet").classList.remove("open");
+  el("veil").classList.remove("open");
+  el("sheetInner").innerHTML = "";
+  document.body.style.overflow = "";
+  sheetState = null;
+}
+function sheetHead(lbl, title){
+  return '<span class="lbl">' + esc(lbl) + '</span><h2 id="sheetTitle">' + esc(title) + '</h2>';
+}
+function nameField(){
+  if (S.name) return "";
+  return '<div class="field"><label class="lbl" for="sName">YOUR NAME FOR THE RECORD</label>'
+       + '<input id="sName" type="text" autocomplete="name" placeholder="' + BLANK + '"></div>';
+}
+function specimenSheet(title, would){
+  openSheet(sheetHead("SPECIMEN", title)
+    + '<div class="body"><p>Nothing is sent. With your token in place this button would <b>' + esc(would) + '</b></p></div>'
+    + '<div class="foot"><button class="btn ghost wide" type="button" data-act="CLOSE">CLOSE</button></div>');
+}
+
+/* ---------- the three actions ---------- */
+function figureFor(id){
+  var f = document.querySelector('[data-fig="' + cssEsc(id) + '"]');
+  return f ? txt(f.value) : "";
+}
+function cssEsc(s){ return String(s).replace(/["\\]/g, "\\$&"); }
+
+function actGate(kind, id){
+  if (specimen()){
+    if (kind==="APPROVE") specimenSheet("Approve", "send the draft as it stands, write the record line under your name, and close the gate.");
+    if (kind==="ROUTE")   specimenSheet("Route", "hand this to a named person, or hold it with your note, and write that on the record.");
+    if (kind==="REFUSE")  specimenSheet("Refuse", "stop this from being sent, with your reason on the record.");
+    return;
+  }
+  var card = document.querySelector('[data-gate="' + cssEsc(id) + '"]');
+  var needsFig = card && card.querySelector('[data-fig]');
+  var fig = figureFor(id);
+  if (kind==="APPROVE" && needsFig && !fig){
+    openSheet(sheetHead("GATE", "The figure is missing")
+      + '<div class="body"><p>This question needs a figure and the figure comes from you. Type it on the card, then approve.</p></div>'
+      + '<div class="foot"><button class="btn ghost wide" type="button" data-act="CLOSE">CLOSE</button></div>');
+    return;
+  }
+
+  if (kind==="APPROVE"){
+    openSheet(sheetHead("GATE · APPROVE", "Send the draft as it stands")
+      + '<div class="body"><p>The draft goes out from your address and the record line is written under your name.'
+      + (fig ? ' The figure you typed is <b>' + esc(fig) + '</b>.' : '') + '</p></div>'
+      + nameField()
+      + '<div class="field"><label class="lbl" for="sNote">NOTE FOR THE RECORD (OPTIONAL)</label><textarea id="sNote" placeholder="' + BLANK + '"></textarea></div>'
+      + '<div class="foot"><button class="btn solid wide" type="button" data-act="SEND">APPROVE</button>'
+      + '<button class="btn ghost wide" type="button" data-act="CLOSE">CANCEL</button></div>');
+    sheetState = {kind:"APPROVE", id:id, figure:fig};
+    return;
+  }
+  if (kind==="ROUTE"){
+    openSheet(sheetHead("GATE · ROUTE", "Hand it on, or hold it")
+      + '<div class="body"><p>Name the person it goes to, or leave the name blank and write why it is held.</p></div>'
+      + '<div class="field"><label class="lbl" for="sTo">TO (NAME)</label><input id="sTo" type="text" autocomplete="off" placeholder="' + BLANK + '"></div>'
+      + '<div class="field"><label class="lbl" for="sNote">NOTE</label><textarea id="sNote" placeholder="' + BLANK + '"></textarea></div>'
+      + nameField()
+      + '<div class="foot"><button class="btn solid wide" type="button" data-act="SEND">ROUTE</button>'
+      + '<button class="btn ghost wide" type="button" data-act="CLOSE">CANCEL</button></div>');
+    sheetState = {kind:"ROUTE", id:id, figure:fig};
+    return;
+  }
+  openSheet(sheetHead("GATE · REFUSE", "Stop this one, with a reason")
+    + '<div class="body"><p>The draft is not sent. Your reason is written on the record.</p></div>'
+    + '<div class="field"><label class="lbl" for="sNote">REASON</label><textarea id="sNote" placeholder="' + BLANK + '"></textarea></div>'
+    + nameField()
+    + '<div class="foot"><button class="btn solid wide" type="button" data-act="SEND">REFUSE</button>'
+    + '<button class="btn ghost wide" type="button" data-act="CLOSE">CANCEL</button></div>');
+  sheetState = {kind:"REFUSE", id:id, figure:fig};
+}
+
+function takeName(){
+  var f = el("sName");
+  if (f && txt(f.value)){ S.name = txt(f.value); put(K.name, S.name); paintWho(); }
+  return S.name;
+}
+
+function sendDecision(){
+  if (!sheetState) return;
+  var st = sheetState;
+  var note = el("sNote") ? txt(el("sNote").value) : "";
+  var to   = el("sTo") ? txt(el("sTo").value) : "";
+  var by   = takeName();
+
+  if (!by){ sheetMessage("A NAME IS NEEDED", "Every decision is signed. Type your name for the record."); return; }
+  if (st.kind==="REFUSE" && !note){ sheetMessage("A REASON IS NEEDED", "Refusing takes a reason. It is written on the record."); return; }
+  if (st.kind==="ROUTE" && !to && !note){ sheetMessage("A NAME OR A NOTE IS NEEDED", "Name the person it goes to, or write why it is held."); return; }
+
+  var composed = note;
+  if (st.kind==="ROUTE" && to) composed = "TO " + to + (note ? ". " + note : "");
+
+  var body = {gate_id:st.id, decision:st.kind, note:composed, figure:st.figure || "", decided_by:by};
+  if (st.kind==="ROUTE") body.route_to = to;
+
+  busySheet(st.kind);
+  post("/decide", body).then(function(){
+    closeSheet();
+    S.open[st.id] = false;
+    if (S.gates) S.gates = S.gates.filter(function(g){ return txt(g.id) !== st.id; });
+    renderGate();
+    flash(st.kind + " WRITTEN TO THE RECORD, SIGNED " + by.toUpperCase());
+    load("gates", true);
+  }).catch(function(e){
+    sheetMessage("NOT SENT", e.message + ". Nothing was written. Try again when you have a signal.");
+  });
+}
+
+function busySheet(kind){
+  var f = el("sheet").querySelector('[data-act="SEND"]');
+  if (f){ f.textContent = "SENDING " + kind; f.setAttribute("disabled","disabled"); }
+}
+function sheetMessage(lbl, line){
+  var b = el("sheet").querySelector(".body");
+  var send = el("sheet").querySelector('[data-act="SEND"]');
+  if (send){ send.removeAttribute("disabled"); send.textContent = sheetState ? sheetState.kind : "SEND"; }
+  if (b) b.innerHTML = '<p><b>' + esc(lbl) + '.</b> ' + esc(line) + '</p>';
+}
+
+/* a short line under the top bar that says what was written */
+function flash(line){
+  var n = document.createElement("div");
+  n.className = "note inv";
+  n.innerHTML = '<span class="lbl">WRITTEN</span><p>' + esc(line) + '</p>';
+  var box = el("gateList");
+  box.parentNode.insertBefore(n, box);
+  window.setTimeout(function(){ if (n.parentNode) n.parentNode.removeChild(n); }, 6000);
+}
+
+/* ---------- revoke, two taps ---------- */
+var revokeArmed = {};
+function actRevoke(id, btn){
+  if (specimen()){
+    specimenSheet("Revoke to show", "return this cell to SHOW, where nothing moves until you press send.");
+    return;
+  }
+  if (!revokeArmed[id]){
+    revokeArmed[id] = true;
+    btn.textContent = "TAP AGAIN TO REVOKE";
+    window.setTimeout(function(){
+      if (revokeArmed[id]){ revokeArmed[id] = false; if (btn.isConnected) btn.textContent = "REVOKE TO SHOW"; }
+    }, 5000);
+    return;
+  }
+  revokeArmed[id] = false;
+  var by = S.name;
+  if (!by){
+    openSheet(sheetHead("CELLS · REVOKE", "Sign the revoke")
+      + '<div class="body"><p>Revoking is written on the record under your name.</p></div>'
+      + nameField()
+      + '<div class="foot"><button class="btn solid wide" type="button" data-act="REVOKE_SEND" data-id="' + esc(id) + '">REVOKE TO SHOW</button>'
+      + '<button class="btn ghost wide" type="button" data-act="CLOSE">CANCEL</button></div>');
+    return;
+  }
+  doRevoke(id, btn);
+}
+function doRevoke(id, btn){
+  if (btn){ btn.textContent = "REVOKING"; btn.setAttribute("disabled","disabled"); }
+  post("/revoke", {cell_id:id, by:S.name}).then(function(){
+    closeSheet();
+    load("cells", true);
+  }).catch(function(e){
+    if (btn){ btn.removeAttribute("disabled"); btn.textContent = "REVOKE TO SHOW"; }
+    openSheet(sheetHead("NOT DONE", "The revoke did not go through")
+      + '<div class="body"><p>' + esc(e.message) + '. The cell is unchanged.</p></div>'
+      + '<div class="foot"><button class="btn ghost wide" type="button" data-act="CLOSE">CLOSE</button></div>');
+  });
+}
+
+/* ---------- stop ---------- */
+function openStop(){
+  if (specimen()){
+    openSheet(sheetHead("SPECIMEN · STOP", "Stop everything")
+      + '<div class="body"><p>Nothing is sent. With your token in place this would <b>deactivate every workflow in your tenancy, write the incident line and notify DAELIX.</b> It takes a reason and a second tap.</p></div>'
+      + '<div class="foot"><button class="btn ghost wide" type="button" data-act="CLOSE">CLOSE</button></div>');
+    return;
+  }
+  openSheet(sheetHead("STOP", "Stop everything for this tenancy")
+    + '<div class="body"><p>Every workflow of yours is deactivated. The incident line is written and DAELIX is told. Nothing restarts without a person.</p></div>'
+    + '<div class="field"><label class="lbl" for="sNote">REASON</label><textarea id="sNote" placeholder="' + BLANK + '"></textarea></div>'
+    + nameField()
+    + '<div class="foot"><button class="btn solid wide" type="button" data-act="STOP_ARM">STOP EVERYTHING</button>'
+    + '<button class="btn ghost wide" type="button" data-act="CLOSE">CANCEL</button></div>');
+  sheetState = {kind:"STOP", armed:false};
+}
+function stopArm(btn){
+  var note = el("sNote") ? txt(el("sNote").value) : "";
+  var by = takeName();
+  if (!note){ sheetMessageStop("A REASON IS NEEDED", "A stop is written down. Say why in one line."); return; }
+  if (!by){ sheetMessageStop("A NAME IS NEEDED", "The stop is signed. Type your name for the record."); return; }
+  if (!sheetState.armed){
+    sheetState.armed = true;
+    btn.textContent = "TAP AGAIN TO STOP EVERYTHING";
+    return;
+  }
+  btn.textContent = "STOPPING";
+  btn.setAttribute("disabled","disabled");
+  post("/stop", {reason:note, by:by}).then(function(){
+    openSheet(sheetHead("STOPPED", "Everything is stopped")
+      + '<div class="body"><p>Your workflows are deactivated, the incident line is written and DAELIX is told. Nothing restarts without a person.</p></div>'
+      + '<div class="foot"><button class="btn ghost wide" type="button" data-act="CLOSE">CLOSE</button></div>');
+    S.gates = null; S.cells = null;
+    load("gates", true);
+  }).catch(function(e){
+    btn.removeAttribute("disabled");
+    btn.textContent = "STOP EVERYTHING";
+    sheetState.armed = false;
+    sheetMessageStop("NOT STOPPED", e.message + ". Telephone DAELIX if this does not clear.");
+  });
+}
+function sheetMessageStop(lbl, line){
+  var b = el("sheet").querySelector(".body");
+  if (b) b.innerHTML = '<p><b>' + esc(lbl) + '.</b> ' + esc(line) + '</p>';
+}
+
+/* ---------- who ---------- */
+function paintWho(){
+  el("whoClient").textContent = "CLIENT " + (S.client ? S.client.toUpperCase() : BLANK);
+  el("whoName").textContent = "SIGNED BY " + (S.name ? S.name.toUpperCase() : BLANK);
+  el("banner").hidden = !specimen();
+  sizeTop();
+}
+function openWho(){
+  openSheet(sheetHead("THIS PHONE", specimen() ? "No tenancy on this phone" : "Who signs the decisions")
+    + '<div class="body"><p>' + (specimen()
+        ? 'This phone holds no client and no token, so the app is a specimen. Open the link DAELIX sent you and it becomes yours.'
+        : 'Client <b>' + esc(S.client || BLANK) + '</b>. Decisions are signed with the name below. The token is held on this phone and is never shown.')
+    + '</p></div>'
+    + '<div class="field"><label class="lbl" for="sName2">NAME FOR THE RECORD</label><input id="sName2" type="text" autocomplete="name" value="' + esc(S.name) + '" placeholder="' + BLANK + '"></div>'
+    + '<div class="foot"><button class="btn solid wide" type="button" data-act="NAME_SAVE">SAVE THE NAME</button>'
+    + '<button class="btn ghost wide" type="button" data-act="CLOSE">CLOSE</button></div>');
+}
+
+/* ---------- loading ---------- */
+function load(which, force){
+  if (specimen()) return;
+  var already = (which==="gates" && S.gates) || (which==="record" && S.record) || (which==="cells" && S.cells) || (which==="report" && S.report!=null);
+  if (already && !force) return;
+  S.loading[which] = true; S.error[which] = "";
+  paint();
+  var p;
+  if (which==="gates")  p = post("/gates", {}).then(function(d){ S.gates = pick(d,"gates"); });
+  if (which==="record") p = post("/record", {limit:100}).then(function(d){ S.record = pick(d,"lines"); });
+  if (which==="cells")  p = post("/cells", {}).then(function(d){ S.cells = pick(d,"cells"); });
+  if (which==="report") p = post("/report", {month:S.month}).then(function(d){ S.report = pickText(d); });
+  p.catch(function(e){ S.error[which] = e.message; })
+   .then(function(){ S.loading[which] = false; paint(); });
+}
+
+/* ---------- painting and navigation ---------- */
+function paint(){
+  if (S.screen==="gate") renderGate();
+  if (S.screen==="record") renderRecord();
+  if (S.screen==="cells") renderCells();
+  if (S.screen==="report") renderReport();
+}
+function go(name){
+  S.screen = name;
+  ["gate","record","cells","report"].forEach(function(n){
+    el("s-" + n).hidden = (n!==name);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(t){
+    t.setAttribute("aria-selected", t.getAttribute("data-go")===name ? "true" : "false");
+  });
+  window.scrollTo(0,0);
+  paint();
+  load(name==="gate" ? "gates" : name);
+}
+function sizeTop(){
+  var h = el("top").offsetHeight;
+  document.documentElement.style.setProperty("--topH", h + "px");
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click", function(ev){
+  var t = ev.target.closest ? ev.target.closest("[data-act],[data-go]") : null;
+  if (!t) return;
+  var go1 = t.getAttribute("data-go");
+  if (go1){ go(go1); return; }
+  var act = t.getAttribute("data-act");
+  var id = t.getAttribute("data-id");
+
+  if (act==="fold"){
+    S.open[id] = !S.open[id];
+    var card = t.closest(".card");
+    var d = card.querySelector(".draft");
+    d.hidden = !S.open[id];
+    t.setAttribute("aria-expanded", S.open[id] ? "true" : "false");
+    t.querySelector("span").textContent = "DRAFT · TAP TO " + (S.open[id] ? "FOLD" : "OPEN");
+    t.querySelector(".sign").innerHTML = S.open[id] ? "-" : "+";
+    return;
+  }
+  if (act==="APPROVE" || act==="ROUTE" || act==="REFUSE"){ actGate(act, id); return; }
+  if (act==="REVOKE"){ actRevoke(id, t); return; }
+  if (act==="REVOKE_SEND"){ takeName(); if (!S.name){ sheetMessage("A NAME IS NEEDED","The revoke is signed."); return; } doRevoke(id, null); return; }
+  if (act==="SEND"){ sendDecision(); return; }
+  if (act==="STOP_ARM"){ stopArm(t); return; }
+  if (act==="NAME_SAVE"){
+    var f = el("sName2");
+    if (f && txt(f.value)){ S.name = txt(f.value); put(K.name, S.name); paintWho(); }
+    closeSheet();
+    return;
+  }
+  if (act==="RETRY"){ load(id, true); return; }
+  if (act==="CLOSE"){ closeSheet(); return; }
+});
+el("veil").addEventListener("click", closeSheet);
+document.addEventListener("keydown", function(e){ if (e.key==="Escape") closeSheet(); });
+el("stopBtn").addEventListener("click", openStop);
+el("whoBtn").addEventListener("click", openWho);
+el("mPrev").addEventListener("click", function(){ shiftMonth(-1); });
+el("mNext").addEventListener("click", function(){ shiftMonth(1); });
+function shiftMonth(n){
+  if (specimen()) return;
+  var p = S.month.split("-"), y = Number(p[0]), m = Number(p[1]) + n;
+  if (m < 1){ m = 12; y -= 1; }
+  if (m > 12){ m = 1; y += 1; }
+  S.month = y + "-" + String(m).padStart(2,"0");
+  S.report = null;
+  load("report", true);
+}
+window.addEventListener("resize", sizeTop);
+window.addEventListener("online", function(){ if (!specimen()) load(S.screen==="gate" ? "gates" : S.screen, true); });
+
+/* the clock is redrawn every half minute so the hours left stay true */
+window.setInterval(function(){ if (S.screen==="gate" && !specimen()) renderGate(); }, 30000);
+
+/* ---------- start ---------- */
+onboard();
+paintWho();
+sizeTop();
+go("gate");
+
+if ("serviceWorker" in navigator && window.location.protocol.indexOf("http")===0){
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  });
+}
+})();
+</script>
+</body>
+</html>
