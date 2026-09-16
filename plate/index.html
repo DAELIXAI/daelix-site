@@ -1,0 +1,209 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<title>DAELIX · plate</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* DAELIX PLATE COMPILER · v1 · 16 September 2026
+   Layer 5 of the stack: procedural generation from a genome. One URL, one plate, 1280 x 800.
+   ?g=<base64url of the genome JSON>   or   ?demo=<grammar>
+   The genome names WHAT is drawn (grammar, parameters, labels, key). This file decides HOW, once, for every plate.
+   GATE F is structural: the visual zone holds markers only; every word sits in the text zone on plain ground. */
+*{box-sizing:border-box}
+html,body{margin:0;background:#f4f4f2;width:1280px;height:800px;overflow:hidden;font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;color:#1a1a1a;-webkit-font-smoothing:antialiased}
+svg{display:block}
+</style></head><body><div id="plate"></div>
+<script>
+// ---------- demos: one per grammar, in the lexicon ----------
+var DEMOS = {
+  orbit: { grammar: 'orbit', layout: 'split', title: 'Decision latency', subtitle: 'The cost is not the decision. It is the orbit before it.', specimen: 11, seed: 11, params: { rings: 6, decay: 1.1, marks: [0.02, 0.5, 0.995] }, key_heading: 'Phase path', key: [{ id: 'P1', title: 'Information arrives', line: 'the answer already exists' }, { id: 'P2', title: 'The long orbit', line: 'meetings, re-reads, waiting on approval' }, { id: 'P3', title: 'The decision lands', line: 'unchanged from day one' }], close: { heading: 'What we remove', lines: ['Not the person.', 'The orbit that needed one.'] } },
+  collapse: { grammar: 'collapse', layout: 'pair', name: 'Entropy collapse', title: 'Entropy collapse', specimen: 1, seed: 7, params: { nodes: 80, edges: 170, grid: 9, leaders: 9, left_title: 'Before the audit', left_sub: 'communication entropy · task leakage · role confusion', right_title: 'After installation', right_sub: 'cells · gates · one record' } },
+  ladder: { grammar: 'ladder', layout: 'split', title: 'The transfer', subtitle: 'Agency is transferred, not assumed. Earned per workflow, on evidence.', specimen: 12, seed: 3, params: { rungs: ['SHOW', 'SHARE', 'CARRY'], current: 1, evidence: [8, 5, 0] }, key_heading: 'Three rungs', key: [{ id: 'R1', title: 'Show', line: 'the machine drafts, a person sends' }, { id: 'R2', title: 'Share', line: 'the routine runs, exceptions come to you' }, { id: 'R3', title: 'Carry', line: 'it runs, you read the record' }], close: { heading: 'What moves it', lines: ['Recorded evidence, in writing.', 'Revocable in one action.'] } },
+  gate: { grammar: 'gate', layout: 'split', title: 'The gate', subtitle: 'Where the brief is silent the cell does not improvise. It halts and routes.', specimen: 13, seed: 5, params: { gates: 4, held: 2 }, key_heading: 'Held by a named person', key: [{ id: 'G1', title: 'Pricing and discounts', line: '' }, { id: 'G2', title: 'Refunds and credits', line: '' }, { id: 'G3', title: 'The unforeseen', line: 'anything the brief did not write down' }], close: { heading: 'Not a preference', lines: ['A gate holds one class of decision', 'and has a name on it.'] } },
+  spine: { grammar: 'spine', layout: 'split', title: 'Step three', subtitle: 'Most automation fails at the step that cannot be bought.', specimen: 14, seed: 9, params: { emphasis: 2 }, key_heading: 'Six steps, one order', key: [{ id: 'S3', title: 'Determine', line: 'automate, augment, keep human, redesign, or stop' }], close: { heading: 'The machinery is chosen last', lines: ['It is chosen to fit the determination,', 'never the other way round.'] } },
+  field: { grammar: 'field', layout: 'split', title: 'Bounded', subtitle: 'The cell answers from approved facts and never outside them.', specimen: 15, seed: 2, params: { points: 90, inside: 0.72 }, key_heading: 'The boundary', key: [{ id: 'F1', title: 'Approved facts', line: 'prices, services, hours, in writing' }, { id: 'F2', title: 'The edge', line: 'the brief, agreed before work begins' }, { id: 'F3', title: 'Outside it', line: 'not answered. Held and routed.' }], close: { heading: 'What it never does', lines: ['Invent a price.', 'Answer outside its remit.'] } },
+  trajectory: { grammar: 'trajectory', layout: 'split', title: 'Fault and repair', subtitle: 'The system is changed by the fault, deliberately, and the change is recorded.', specimen: 16, seed: 4, params: { resets: 2 }, key_heading: 'The loop', key: [{ id: 'T1', title: 'Detected by the system', line: 'not reported by the client' }, { id: 'T2', title: 'Contained', line: 'halt or reverse, then the register' }, { id: 'T3', title: 'Local or general', line: 'a general fault is corrected in every cell of its class' }], close: { heading: 'The structural advantage', lines: ['A person repeats a Tuesday error in March.', 'A corrected cell does not.'] } },
+  ledger: { grammar: 'ledger', layout: 'split', title: 'The record', subtitle: 'Every action written down. Readable by the client without us.', specimen: 17, seed: 8, params: { rows: 14, held_row: 9 }, key_heading: 'One line per action', key: [{ id: 'L1', title: 'What was done', line: 'when, on what input, with what result' }, { id: 'L2', title: 'Where it stopped', line: 'the point the work left the machine' }, { id: 'L3', title: 'Handed over intact', line: 'at the end of an installation' }], close: { heading: 'Trust', lines: ['Not our word.', 'A document you can read on a Sunday.'] } },
+  lattice: { grammar: 'lattice', layout: 'split', title: 'The fleet', subtitle: 'One cell per workflow. The same anatomy at every scale.', specimen: 18, seed: 6, params: { cols: 6, rows: 4, enlarged: 8 }, key_heading: 'Anatomy of a cell', key: [{ id: 'C1', title: 'Brief, cell, verifier, record, gate', line: 'every cell, every size' }, { id: 'C2', title: 'A fleet', line: 'a firm of fifty is a one-person business at volume' }], close: { heading: 'The unit', lines: ['Never a general assistant.', 'One workflow, one job, one standard.'] } },
+  decay: { grammar: 'decay', layout: 'split', title: 'Symbolic velocity', subtitle: 'Roles fail as the structures that held them thin. What remains is the repeating work.', specimen: 19, seed: 10, params: { bars: 14, rate: 1.4 }, key_heading: 'What thins', key: [{ id: 'V1', title: 'The role', line: 'a function held in place by obligation' }, { id: 'V2', title: 'What remains', line: 'the repeating work itself' }, { id: 'V3', title: 'The line', line: 'below it, the work can be installed' }], close: { heading: 'Why the unit is the workflow', lines: ['Not the company.', 'Not the size of it.'] } }
+};
+
+(function(){
+  // ---------- genome in ----------
+  const q = new URLSearchParams(location.search);
+  const b64 = q.get('g');
+  const demo = q.get('demo');
+  let G = null;
+  if (b64) { try { G = JSON.parse(decodeURIComponent(escape(atob(b64.replace(/-/g,'+').replace(/_/g,'/'))))); } catch (e) { G = null; } }
+  if (!G && demo) G = DEMOS[demo] || null;
+  if (!G) G = DEMOS.orbit;
+
+  // ---------- constants of the system ----------
+  const W = 1280, H = 800;
+  const INK = '#1a1a1a', MID = '#6f6f6b', RULE = '#c9c9c4', FAINT = '#dcdcd7', GROUND = '#f4f4f2', PAPER = '#fbfbfa';
+  const F = "'IBM Plex Mono',ui-monospace,Menlo,monospace";
+  const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const rng = mulberry32(hash(String(G.seed == null ? 1 : G.seed)));
+  const R = (a, b) => a + (b - a) * rng();
+  function hash(s){ let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+  function mulberry32(a){ return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const txt = (x, y, s, o) => { o = o || {}; return `<text x="${x}" y="${y}" font-family="${F}" font-size="${o.size||14}" font-weight="${o.w||400}" fill="${o.fill||INK}" letter-spacing="${o.ls||0}" text-anchor="${o.anchor||'start'}">${esc(s)}</text>`; };
+  const caps = s => String(s || '').toUpperCase();
+  const roman = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+  const stamp = (() => { const d = G.date ? new Date(G.date) : new Date(); return roman[d.getMonth()] + '.' + String(d.getFullYear()).slice(2); })();
+
+  // ---------- frame: title, footer ----------
+  const parts = [];
+  const layout = G.layout === 'pair' ? 'pair' : 'split';
+  const V = layout === 'split' ? { x: 70, y: 150, w: 720, h: 560 } : { x: 70, y: 150, w: 1140, h: 560 };
+  const T = { x: 838, y: 150, w: 372 };
+  if (layout === 'split') {
+    parts.push(txt(70, 92, caps(G.title), { size: 26, w: 700, ls: 1 }));
+    if (G.subtitle) parts.push(txt(70, 118, caps(G.subtitle), { size: 11, fill: MID, ls: 1.4 }));
+    parts.push(`<line x1="${T.x - 24}" y1="${V.y}" x2="${T.x - 24}" y2="${V.y + V.h}" stroke="${FAINT}" stroke-width="1"/>`);
+  }
+  parts.push(`<line x1="40" y1="748" x2="1240" y2="748" stroke="${RULE}" stroke-width="1"/>`);
+  parts.push(txt(1240, 776, 'DAELIX AI', { size: 12, w: 700, ls: 1.6, anchor: 'end' }));
+
+  // ---------- text zone (split layout) ----------
+  function textZone(markers) {
+    const out = []; let y = T.y + 4;
+    if (G.key_heading) { out.push(txt(T.x, y, caps(G.key_heading), { size: 12, w: 700, ls: 1.6 })); y += 36; }
+    (G.key || []).forEach((k, i) => {
+      const id = k.id || ('P' + (i + 1));
+      out.push(`<circle cx="${T.x + 9}" cy="${y - 5}" r="8.5" fill="none" stroke="${INK}" stroke-width="1.2"/>`);
+      out.push(txt(T.x + 9, y - 2, id, { size: 7, w: 600, anchor: 'middle' }));
+      out.push(txt(T.x + 32, y, caps(k.title), { size: 12.5, w: 700, ls: 1 }));
+      if (k.line) out.push(txt(T.x + 32, y + 18, k.line, { size: 11, fill: MID }));
+      y += 66;
+    });
+    if (G.close && G.close.heading) {
+      y += 6; out.push(txt(T.x, y, caps(G.close.heading), { size: 12, w: 700, ls: 1.6 })); y += 24;
+      (G.close.lines || []).forEach(l => { out.push(txt(T.x, y, l, { size: 11.5, fill: MID })); y += 18; });
+    }
+    return out.join('');
+  }
+  const marker = (x, y, id, o) => { o = o || {}; const r = o.r || 6.5; return (o.filled ? `<circle cx="${x}" cy="${y}" r="${r + 1}" fill="${INK}"/>` : `<circle cx="${x}" cy="${y}" r="${r}" fill="${PAPER}" stroke="${INK}" stroke-width="1.6"/>`) + txt(x + r + 8, y + 4, id, { size: 10, w: 700, ls: 0.6 }); };
+  const keyIds = () => (G.key || []).map((k, i) => k.id || ('P' + (i + 1)));
+
+  // ---------- grammars: the lexicon ----------
+  const GRAMMARS = {
+    orbit: { label: 'PHASE SPACE + ATTRACTOR', kind: 'temporal', draw(p){
+      const cx = V.x + V.w * 0.5, cy = V.y + V.h * 0.5; const rings = clamp(p.rings, 3, 9, 6); const rx = V.w * 0.42, ry = V.h * 0.42;
+      const s = []; const pts = [];
+      const turns = rings; const N = 1400;
+      for (let i = 0; i <= N; i++) { const t = i / N; const a = t * turns * Math.PI * 2; const f = Math.pow(1 - t, clamp(p.decay, 0.6, 2.2, 1.1)); pts.push([cx + Math.cos(a) * rx * f, cy + Math.sin(a) * ry * f * 0.92]); }
+      s.push(`<path d="M ${pts.map(q => q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' L ')}" fill="none" stroke="${INK}" stroke-width="0.9" opacity="0.85"/>`);
+      const ids = keyIds(); const at = (p.marks && p.marks.length ? p.marks : [0.02, 0.5, 0.995]);
+      at.slice(0, ids.length).forEach((t, i) => { const q = pts[Math.round(clamp(t, 0, 1, 0.5) * N)]; s.push(marker(q[0], q[1], ids[i], { filled: t > 0.9 })); });
+      return s.join('');
+    }},
+    collapse: { label: 'CHAOTIC NETWORK RESOLVING TO ORDERED NETWORK', kind: 'spatial', draw(p){
+      // pair layout: left chaos, right lattice, leader lines between
+      const s = []; const L = { x: 70, y: 150, w: 500, h: 560 }, Rr = { x: 740, y: 150, w: 470, h: 520 };
+      const n = clamp(p.nodes, 20, 140, 80); const pts = [];
+      for (let i = 0; i < n; i++) pts.push([L.x + R(0, L.w), L.y + R(0, L.h)]);
+      const m = clamp(p.edges, 40, 320, 170);
+      for (let i = 0; i < m; i++) { const a = pts[Math.floor(R(0, n))], b = pts[Math.floor(R(0, n))]; s.push(`<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}" stroke="${INK}" stroke-width="0.6" opacity="${R(0.18, 0.5).toFixed(2)}"/>`); }
+      pts.forEach(q => s.push(`<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${R(1.2, 3.2).toFixed(1)}" fill="${INK}" opacity="${R(0.5, 0.95).toFixed(2)}"/>`));
+      const g = clamp(p.grid, 4, 12, 9); const step = Rr.w / (g - 1), stepy = Rr.h / (g - 1);
+      for (let i = 0; i < g; i++) { s.push(`<line x1="${Rr.x + i * step}" y1="${Rr.y}" x2="${Rr.x + i * step}" y2="${Rr.y + Rr.h}" stroke="${INK}" stroke-width="0.7"/>`); s.push(`<line x1="${Rr.x}" y1="${Rr.y + i * stepy}" x2="${Rr.x + Rr.w}" y2="${Rr.y + i * stepy}" stroke="${INK}" stroke-width="0.7"/>`); }
+      for (let i = 0; i < g; i++) for (let j = 0; j < g; j++) s.push(`<circle cx="${Rr.x + i * step}" cy="${Rr.y + j * stepy}" r="2.4" fill="${INK}"/>`);
+      const leaders = clamp(p.leaders, 4, 14, 9);
+      for (let i = 0; i < leaders; i++) { const y1 = L.y + (i + 0.5) * L.h / leaders + R(-20, 20), y2 = Rr.y + (i + 0.5) * Rr.h / leaders; s.push(`<line x1="${L.x + L.w + 14}" y1="${y1.toFixed(1)}" x2="${Rr.x - 12}" y2="${y2.toFixed(1)}" stroke="${INK}" stroke-width="0.7" opacity="0.8"/>`); }
+      // pair headings sit ABOVE the panels on plain ground (GATE F)
+      s.push(txt(L.x, 104, caps(p.left_title || 'BEFORE'), { size: 18, w: 600, ls: 1 })); if (p.left_sub) s.push(txt(L.x, 124, caps(p.left_sub), { size: 10, fill: MID, ls: 1.4 }));
+      s.push(txt(Rr.x, 104, caps(p.right_title || 'AFTER'), { size: 18, w: 600, ls: 1 })); if (p.right_sub) s.push(txt(Rr.x, 124, caps(p.right_sub), { size: 10, fill: MID, ls: 1.4 }));
+      return s.join('');
+    }},
+    ladder: { label: 'THREE RUNGS · TRANSFER ON EVIDENCE', kind: 'sequential', draw(p){
+      const s = []; const rungs = (p.rungs && p.rungs.length ? p.rungs : ['SHOW', 'SHARE', 'CARRY']).slice(0, 5); const cur = clamp(p.current, 0, rungs.length - 1, 1);
+      const x0 = V.x + 90, x1 = V.x + V.w - 90; const gap = V.h / (rungs.length + 1);
+      s.push(`<line x1="${x0}" y1="${V.y + 20}" x2="${x0}" y2="${V.y + V.h - 20}" stroke="${INK}" stroke-width="1.4"/>`);
+      s.push(`<line x1="${x1}" y1="${V.y + 20}" x2="${x1}" y2="${V.y + V.h - 20}" stroke="${INK}" stroke-width="1.4"/>`);
+      const ids = keyIds();
+      rungs.forEach((r, i) => { const y = V.y + V.h - gap * (i + 1); const on = i <= cur; s.push(`<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="${INK}" stroke-width="${on ? 2.4 : 1}" ${on ? '' : `stroke-dasharray="6 6"`}/>`);
+        const ev = clamp(p.evidence && p.evidence[i], 0, 12, on ? 6 : 0); for (let k = 0; k < ev; k++) s.push(`<line x1="${x0 + 40 + k * 22}" y1="${y - 14}" x2="${x0 + 40 + k * 22}" y2="${y - 4}" stroke="${INK}" stroke-width="1.6"/>`);
+        if (ids[i]) s.push(marker(x1 + 26, y, ids[i], { filled: i === cur })); });
+      s.push(`<circle cx="${(x0 + x1) / 2}" cy="${V.y + V.h - gap * (cur + 1)}" r="7" fill="${INK}"/>`);
+      return s.join('');
+    }},
+    gate: { label: 'HOLD AND ROUTE', kind: 'behavioural', draw(p){
+      const s = []; const n = clamp(p.gates, 2, 6, 4); const held = clamp(p.held, 0, n - 1, 2); const y = V.y + V.h * 0.5; const x0 = V.x + 40, x1 = V.x + V.w - 40; const step = (x1 - x0) / (n + 1);
+      s.push(`<line x1="${x0}" y1="${y}" x2="${x0 + step * (held + 1) - 14}" y2="${y}" stroke="${INK}" stroke-width="1.8"/>`);
+      const ids = keyIds();
+      for (let i = 0; i < n; i++) { const x = x0 + step * (i + 1); const open = i !== held; s.push(`<line x1="${x}" y1="${y - 96}" x2="${x}" y2="${open ? y - 16 : y + 96}" stroke="${INK}" stroke-width="3"/>`); if (open) s.push(`<line x1="${x}" y1="${y + 16}" x2="${x}" y2="${y + 96}" stroke="${INK}" stroke-width="3"/>`); s.push(`<circle cx="${x}" cy="${y - 96}" r="4" fill="${INK}"/>`); s.push(`<circle cx="${x}" cy="${y + 96}" r="4" fill="${INK}"/>`); if (i > held) s.push(`<line x1="${x - step + 14}" y1="${y}" x2="${x - 14}" y2="${y}" stroke="${INK}" stroke-width="1" stroke-dasharray="5 6"/>`); if (ids[i]) s.push(marker(x, y - 122, ids[i], { filled: i === held })); }
+      // the held gate routes upward to a person: a plain square, no figure
+      const hx = x0 + step * (held + 1); s.push(`<path d="M ${hx - 18},${y} L ${hx - 18},${y - 190} L ${hx + 150},${y - 190}" fill="none" stroke="${INK}" stroke-width="1.6"/>`); s.push(`<rect x="${hx + 150}" y="${y - 210}" width="40" height="40" fill="${PAPER}" stroke="${INK}" stroke-width="2"/>`); s.push(`<line x1="${x0}" y1="${y}" x2="${x0}" y2="${y - 12}" stroke="${INK}" stroke-width="1.8"/>`);
+      s.push(`<line x1="${x0 + step * n + 14}" y1="${y}" x2="${x1}" y2="${y}" stroke="${INK}" stroke-width="1" stroke-dasharray="5 6"/>`);
+      return s.join('');
+    }},
+    spine: { label: 'SIX STEPS · ONE ORDER', kind: 'sequential', draw(p){
+      const s = []; const steps = (p.steps && p.steps.length ? p.steps : ['EXAMINE','MAP','DETERMINE','BUILD','VERIFY','OBSERVE']).slice(0, 8); const hot = clamp(p.emphasis, 0, steps.length - 1, 2);
+      const x0 = V.x + 40, x1 = V.x + V.w - 40; const y = V.y + V.h * 0.5; const step = (x1 - x0) / (steps.length - 1);
+      s.push(`<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="${INK}" stroke-width="1.2"/>`);
+      const ids = keyIds(); const rest = ids.slice(1); let k = 0;
+      steps.forEach((st, i) => { const x = x0 + step * i; const r = i === hot ? 16 : 7; s.push(`<circle cx="${x}" cy="${y}" r="${r}" fill="${i === hot ? INK : PAPER}" stroke="${INK}" stroke-width="1.6"/>`); s.push(txt(x, y + 44, caps(st), { size: 10, w: 600, ls: 1.2, anchor: 'middle', fill: i === hot ? INK : MID })); if (i === hot) { if (ids[0]) s.push(marker(x, y - 44, ids[0], { filled: true })); } else if (rest[k] && (p.mark_all || i === 0 || i === steps.length - 1)) { s.push(marker(x, y - 44, rest[k])); k++; } });
+      return s.join('');
+    }},
+    field: { label: 'BOUNDED FIELD', kind: 'spatial', draw(p){
+      const s = []; const cx = V.x + V.w * 0.5, cy = V.y + V.h * 0.5; const rx = V.w * 0.34, ry = V.h * 0.36;
+      const n = clamp(p.points, 20, 200, 90); const inside = clamp(p.inside, 0, 1, 0.75);
+      s.push(`<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="none" stroke="${INK}" stroke-width="1.4"/>`);
+      for (let i = 0; i < n; i++) { const inn = rng() < inside; const a = R(0, Math.PI * 2); const rr = inn ? Math.sqrt(rng()) * 0.94 : R(1.08, 1.45); const x = cx + Math.cos(a) * rx * rr, y = cy + Math.sin(a) * ry * rr; if (x < V.x || x > V.x + V.w || y < V.y || y > V.y + V.h) continue; s.push(inn ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6" fill="${INK}"/>` : `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6" fill="none" stroke="${INK}" stroke-width="1"/>`); }
+      const ids = keyIds(); if (ids[0]) s.push(marker(cx + rx * 0.55, cy - ry * 0.4, ids[0], { filled: true })); if (ids[1]) s.push(marker(cx + rx, cy, ids[1])); if (ids[2]) s.push(marker(cx - rx * 1.25, cy + ry * 0.7, ids[2]));
+      return s.join('');
+    }},
+    trajectory: { label: 'PATH WITH RESETS', kind: 'temporal', draw(p){
+      const s = []; const x0 = V.x + 30, x1 = V.x + V.w - 30, yb = V.y + V.h - 40, yt = V.y + 40; const resets = clamp(p.resets, 0, 5, 2); const seg = (x1 - x0) / (resets + 1); const pts = []; let y = yb;
+      s.push(`<line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="${FAINT}" stroke-width="1"/>`);
+      const ids = keyIds(); let k = 0;
+      for (let r = 0; r <= resets; r++) { const sx = x0 + seg * r; const N = 40; for (let i = 0; i <= N; i++) { const t = i / N; const x = sx + seg * t; const yy = yb - (yb - yt) * (0.15 + 0.7 * (1 - Math.exp(-3 * t)) * (0.6 + 0.4 * r / (resets + 1))); pts.push([x, yy]); } if (r < resets) { const last = pts[pts.length - 1]; s.push(`<path d="M ${pts.map(q => q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' L ')}" fill="none" stroke="${INK}" stroke-width="1.6"/>`); s.push(`<line x1="${last[0]}" y1="${last[1]}" x2="${last[0]}" y2="${yb}" stroke="${INK}" stroke-width="1.6"/>`); s.push(`<line x1="${last[0] - 9}" y1="${last[1]}" x2="${last[0] + 9}" y2="${last[1]}" stroke="${INK}" stroke-width="2.4"/>`); if (ids[k]) { s.push(marker(last[0], last[1] - 26, ids[k])); k++; } pts.length = 0; } }
+      s.push(`<path d="M ${pts.map(q => q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' L ')}" fill="none" stroke="${INK}" stroke-width="1.6"/>`);
+      const end = pts[pts.length - 1]; if (ids[k]) s.push(marker(end[0], end[1], ids[k], { filled: true }));
+      return s.join('');
+    }},
+    ledger: { label: 'THE RECORD · ONE LINE PER ACTION', kind: 'material', draw(p){
+      const s = []; const rows = clamp(p.rows, 6, 22, 14); const held = clamp(p.held_row, -1, rows - 1, 9); const rh = V.h / rows; const x0 = V.x + 20, x1 = V.x + V.w - 20;
+      const ids = keyIds(); let k = 0;
+      for (let i = 0; i < rows; i++) { const y = V.y + rh * (i + 0.5); s.push(`<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="${FAINT}" stroke-width="1"/>`); s.push(`<circle cx="${x0 + 10}" cy="${y}" r="3" fill="${INK}"/>`); const segs = 3 + Math.floor(R(0, 4)); let x = x0 + 40; for (let j = 0; j < segs; j++) { const w = R(30, 120); s.push(`<line x1="${x}" y1="${y}" x2="${x + w}" y2="${y}" stroke="${INK}" stroke-width="${i === held ? 3 : 2}"/>`); x += w + 18; if (x > x1 - 120) break; } s.push(`<line x1="${x1 - 60}" y1="${y - 5}" x2="${x1 - 60}" y2="${y + 5}" stroke="${INK}" stroke-width="1.2"/>`); if (i === held) { s.push(`<line x1="${x1 - 40}" y1="${y}" x2="${x1 - 40}" y2="${y - 46}" stroke="${INK}" stroke-width="1.4"/>`); if (ids[k]) { s.push(marker(x1 - 40, y - 60, ids[k], { filled: true })); k++; } } else if (ids[k] && (i === 0 || i === rows - 1)) { s.push(marker(x1 - 40, y, ids[k])); k++; } }
+      return s.join('');
+    }},
+    lattice: { label: 'A FLEET · THE SAME ANATOMY AT EVERY SCALE', kind: 'material', draw(p){
+      const s = []; const cols = clamp(p.cols, 3, 8, 6), rows = clamp(p.rows, 2, 6, 4); const cw = V.w / cols, ch = V.h / rows; const big = clamp(p.enlarged, 0, cols * rows - 1, 8);
+      const ids = keyIds(); let k = 0;
+      for (let i = 0; i < cols * rows; i++) { const x = V.x + (i % cols) * cw, y = V.y + Math.floor(i / cols) * ch; const pad = i === big ? 6 : 14; s.push(`<rect x="${x + pad}" y="${y + pad}" width="${cw - pad * 2}" height="${ch - pad * 2}" fill="${i === big ? PAPER : 'none'}" stroke="${INK}" stroke-width="${i === big ? 1.8 : 0.9}"/>`);
+        // anatomy: brief (top bar), cell (box), verifier (offset box), record (baseline ticks), gate (small square)
+        const ix = x + pad + 10, iy = y + pad + 10, iw = cw - pad * 2 - 20, ih = ch - pad * 2 - 20;
+        s.push(`<line x1="${ix}" y1="${iy}" x2="${ix + iw}" y2="${iy}" stroke="${INK}" stroke-width="2"/>`);
+        s.push(`<rect x="${ix}" y="${iy + 12}" width="${iw * 0.55}" height="${ih * 0.45}" fill="none" stroke="${INK}" stroke-width="1"/>`);
+        s.push(`<rect x="${ix + iw * 0.62}" y="${iy + 12 + ih * 0.12}" width="${iw * 0.38}" height="${ih * 0.33}" fill="none" stroke="${INK}" stroke-width="1" stroke-dasharray="3 3"/>`);
+        for (let t = 0; t < 5; t++) s.push(`<line x1="${ix + t * iw / 5 + 4}" y1="${iy + ih - 2}" x2="${ix + t * iw / 5 + 4}" y2="${iy + ih - 10}" stroke="${INK}" stroke-width="1.2"/>`);
+        s.push(`<rect x="${ix + iw - 10}" y="${iy + ih - 12}" width="10" height="10" fill="${INK}"/>`);
+        if (i === big && ids[k]) { s.push(marker(x + cw - 26, y + 26, ids[k], { filled: true })); k++; } }
+      if (ids[k]) s.push(marker(V.x + V.w - 26, V.y + V.h - 26, ids[k]));
+      return s.join('');
+    }},
+    decay: { label: 'ROLES THINNING UNDER VELOCITY', kind: 'temporal', draw(p){
+      const s = []; const bars = clamp(p.bars, 5, 24, 14); const x0 = V.x + 30, x1 = V.x + V.w - 30, yb = V.y + V.h - 30; const bw = (x1 - x0) / bars; const rate = clamp(p.rate, 0.4, 3, 1.4);
+      const ids = keyIds();
+      for (let i = 0; i < bars; i++) { const t = i / (bars - 1); const h = (V.h - 80) * Math.exp(-rate * t); const x = x0 + i * bw + bw * 0.25; s.push(`<rect x="${x.toFixed(1)}" y="${(yb - h).toFixed(1)}" width="${(bw * 0.5).toFixed(1)}" height="${h.toFixed(1)}" fill="none" stroke="${INK}" stroke-width="1.2"/>`); const keep = (V.h - 80) * 0.18; if (h < keep) s.push(`<rect x="${x.toFixed(1)}" y="${(yb - Math.min(h, keep)).toFixed(1)}" width="${(bw * 0.5).toFixed(1)}" height="${Math.min(h, keep).toFixed(1)}" fill="${INK}"/>`); }
+      s.push(`<line x1="${x0}" y1="${yb}" x2="${x1}" y2="${yb}" stroke="${INK}" stroke-width="1.2"/>`);
+      s.push(`<line x1="${x0}" y1="${yb - (V.h - 80) * 0.18}" x2="${x1}" y2="${yb - (V.h - 80) * 0.18}" stroke="${INK}" stroke-width="0.8" stroke-dasharray="4 5"/>`);
+      if (ids[0]) s.push(marker(x0 + bw * 0.5, yb - (V.h - 80) - 20, ids[0])); if (ids[1]) s.push(marker(x1 - bw * 0.5, yb - (V.h - 80) * 0.18 - 20, ids[1], { filled: true })); if (ids[2]) s.push(marker(x0 + bw * (bars / 2), yb + 18, ids[2]));
+      return s.join('');
+    }}
+  };
+  function clamp(v, lo, hi, d){ v = Number(v); if (!isFinite(v)) return d; return Math.max(lo, Math.min(hi, v)); }
+
+  // ---------- compile ----------
+  const gr = GRAMMARS[G.grammar] || GRAMMARS.orbit;
+  const spec = String(G.specimen == null ? '00' : G.specimen).padStart(2, '0');
+  parts.push(txt(40, 776, caps((G.name || G.title) + ' · SPECIMEN ' + spec + ' · ' + (G.grammar_label || gr.label) + ' · ' + stamp), { size: 11, fill: MID, ls: 1.2 }));
+  const visual = gr.draw(G.params || {});
+  const text = layout === 'split' ? textZone() : '';
+  document.getElementById('plate').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="${GROUND}"/>${parts.join('')}${visual}${text}</svg>`;
+  document.title = 'DAELIX · ' + caps(G.title || G.name);
+  window.__PLATE__ = { grammar: G.grammar, kind: gr.kind, layout, markers: keyIds() };
+})();
+
+</script></body></html>
