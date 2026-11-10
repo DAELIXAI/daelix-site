@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://daelixai.com/sitemap.xml
